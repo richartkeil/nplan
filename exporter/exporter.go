@@ -17,9 +17,9 @@ func check(e error) {
 
 func Export(scan parser.Scan) {
 	cols := 5
-	width := 120
-	height := 90
-	padding := 10
+	width := 180
+	height := 120
+	padding := 30
 
 	cells := make([]MxCell, 0)
 	cells = append(cells, MxCell{
@@ -28,9 +28,9 @@ func Export(scan parser.Scan) {
 	for i := 0; i < len(scan.Hosts); i++ {
 		cells = append(cells, MxCell{
 			Id:     uuid.NewString(),
-			Value:  scan.Hosts[i].Address.Value,
+			Value:  getHostValue(scan.Hosts[i]),
 			Parent: "0",
-			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=4",
+			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
 			Vertex: "1",
 			MxGeometry: &MxGeometry{
 				X:      fmt.Sprint((i % cols) * (width + padding)),
@@ -66,4 +66,27 @@ func Export(scan parser.Scan) {
 	check(err)
 
 	os.WriteFile("./dist/drawio.xml", output, 0644)
+}
+
+func getHostValue(host parser.Host) string {
+	serviceColor := "#bbb"
+
+	value := ""
+	if len(host.Hostnames) > 0 {
+		value += fmt.Sprintf("<strong>%v</strong><br>", host.Hostnames[0].Name)
+	}
+	value += fmt.Sprintf("%v<br><br>", host.Address.Value)
+
+	for i := 0; i < len(host.Ports); i++ {
+		value += fmt.Sprintf(
+			":%v - %v<br><span style=\"color: %v\">(%v %v)</span><br>",
+			host.Ports[i].Portid,
+			host.Ports[i].Service.Name,
+			serviceColor,
+			host.Ports[i].Service.Product,
+			host.Ports[i].Service.Version,
+		)
+	}
+
+	return value
 }
