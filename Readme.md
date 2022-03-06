@@ -1,12 +1,3 @@
-# Structure
+# NPlan
 
-- IP
-- MAC
-- IPv6
-- hostname
-- ports
-  - port
-  - service
-  - version
-  - ssh key
-- os
+Transforms nmap XML into intermediate JSON and generates a basic network plan in the DrawIO XML format.
