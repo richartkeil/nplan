@@ -39,8 +39,7 @@ func main() {
 
 	if *nmapInputFlag != "" {
 		nmapScan := parser.ParseNmap(*nmapInputFlag)
-		scan = nmapScan
-		// core.ComplementWithNmap(&scan, &nmapScan)
+		core.ComplementWithNmap(&scan, &nmapScan)
 	}
 	if *scan6InputFlag != "" {
 		scan6Hosts := parser.ParseScan6(*scan6InputFlag)

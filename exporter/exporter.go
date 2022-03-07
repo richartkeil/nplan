@@ -29,10 +29,10 @@ func Export(path string, scan *core.Scan) {
 		Id:     "1",
 		Parent: "0",
 	})
-	for i := 0; i < len(scan.Hosts); i++ {
+	for i, host := range scan.Hosts {
 		cells = append(cells, MxCell{
 			Id:     uuid.NewString(),
-			Value:  getHostValue(scan.Hosts[i]),
+			Value:  getHostValue(host),
 			Parent: "1",
 			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
 			Vertex: "1",
@@ -88,13 +88,13 @@ func getHostValue(host core.Host) string {
 
 	value += "<br>"
 
-	for i := 0; i < len(host.Ports); i++ {
+	for _, port := range host.Ports {
 		value += fmt.Sprintf(
 			":%v - %v<br><span style=\"color: %v\">(%v)</span><br>",
-			host.Ports[i].Number,
-			host.Ports[i].ServiceName,
+			port.Number,
+			port.ServiceName,
 			serviceColor,
-			host.Ports[i].ServiceVersion,
+			port.ServiceVersion,
 		)
 	}
 
