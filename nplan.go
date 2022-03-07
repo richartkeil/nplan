@@ -18,21 +18,24 @@ func check(e error) {
 }
 
 func main() {
-	nmapInputFlag := flag.String("nmap", "", "nmap input file path")
-	scan6InputFlag := flag.String("scan6", "", "scan6 input file path")
-	jsonFileFlag := flag.String("json", "./dist/scan.json", "intermediate json file path")
-	drawioOutputFlag := flag.String("drawio", "./dist/plan.drawio", "drawio output file path")
+	// Common flags
+	nmapInputFlag := flag.String("nmap", "", "Set the path to the nmap input .xml file.")
+	scan6InputFlag := flag.String("scan6", "", "Set the path to the scan6 input .txt file.")
+	exportFlag := flag.Bool("export", false, "Export the current model to a .drawio file.")
+	// Config flags
+	jsonFileFlag := flag.String("json", "./dist/scan.json", "Set the path where to store the .json model file.")
+	drawioOutputFlag := flag.String("drawio", "./dist/plan.drawio", "Set the path were to store the exported .drawio file.")
+	resetModelFlag := flag.Bool("fresh", false, "Delete the previous .json model and build a new one. Use with caution.")
 
 	flag.Parse()
 
 	jsonData, err := os.ReadFile(*jsonFileFlag)
-	if errors.Is(err, os.ErrNotExist) {
+	if errors.Is(err, os.ErrNotExist) || *resetModelFlag {
 		jsonData = []byte("{}")
 		err = os.WriteFile(*jsonFileFlag, jsonData, 0644)
 		check(err)
 	}
 
-	// Read existing JSON
 	var scan core.Scan
 	err = json.Unmarshal(jsonData, &scan)
 	check(err)
@@ -51,7 +54,7 @@ func main() {
 
 	os.WriteFile(*jsonFileFlag, json, 0644)
 
-	if *drawioOutputFlag != "" {
+	if *exportFlag {
 		exporter.Export(*drawioOutputFlag, &scan)
 	}
 }
