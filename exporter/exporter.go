@@ -17,7 +17,7 @@ func check(e error) {
 
 func Export(scan core.Scan) {
 	cols := 5
-	width := 180
+	width := 210
 	height := 120
 	padding := 30
 
@@ -69,7 +69,7 @@ func Export(scan core.Scan) {
 	output, err := xml.MarshalIndent(mxFile, "", "  ")
 	check(err)
 
-	os.WriteFile("./dist/drawio.xml", output, 0644)
+	os.WriteFile("./dist/drawio.drawio", output, 0644)
 }
 
 func getHostValue(host core.Host) string {
@@ -81,6 +81,9 @@ func getHostValue(host core.Host) string {
 	}
 	if host.IPv4 != "" {
 		value += fmt.Sprintf("%v<br>", host.IPv4)
+	}
+	if host.IPv6 != "" {
+		value += fmt.Sprintf("%v<br>", host.IPv6)
 	}
 
 	value += "<br>"
