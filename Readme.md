@@ -28,7 +28,7 @@ Usage of nplan:
   -nmap string
     	Set the path to the nmap input .xml file.
   -scan6 string
-    	Set the path to the scan6 input .txt file.
+    	Set the path to the scan6 input .txt file. For this to take effect the current model should already include MAC addresses.
   -export
     	Export the current model to a .drawio file.
   -json string

@@ -20,7 +20,7 @@ func check(e error) {
 func main() {
 	// Common flags
 	nmapInputFlag := flag.String("nmap", "", "Set the path to the nmap input .xml file.")
-	scan6InputFlag := flag.String("scan6", "", "Set the path to the scan6 input .txt file.")
+	scan6InputFlag := flag.String("scan6", "", "Set the path to the scan6 input .txt file. For this to take effect the current model should already include MAC addresses.")
 	exportFlag := flag.Bool("export", false, "Export the current model to a .drawio file.")
 	// Config flags
 	jsonFileFlag := flag.String("json", "./dist/model.json", "Set the path where to store the .json model file.")
