@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/google/uuid"
-	"github.com/richartkeil/nplan/parser"
+	"github.com/richartkeil/nplan/core"
 )
 
 func check(e error) {
@@ -15,7 +15,7 @@ func check(e error) {
 	}
 }
 
-func Export(scan parser.Scan) {
+func Export(scan core.Scan) {
 	cols := 5
 	width := 180
 	height := 120
@@ -25,11 +25,15 @@ func Export(scan parser.Scan) {
 	cells = append(cells, MxCell{
 		Id: "0",
 	})
+	cells = append(cells, MxCell{
+		Id:     "1",
+		Parent: "0",
+	})
 	for i := 0; i < len(scan.Hosts); i++ {
 		cells = append(cells, MxCell{
 			Id:     uuid.NewString(),
 			Value:  getHostValue(scan.Hosts[i]),
-			Parent: "0",
+			Parent: "1",
 			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
 			Vertex: "1",
 			MxGeometry: &MxGeometry{
@@ -68,23 +72,26 @@ func Export(scan parser.Scan) {
 	os.WriteFile("./dist/drawio.xml", output, 0644)
 }
 
-func getHostValue(host parser.Host) string {
+func getHostValue(host core.Host) string {
 	serviceColor := "#bbb"
 
 	value := ""
-	if len(host.Hostnames) > 0 {
-		value += fmt.Sprintf("<strong>%v</strong><br>", host.Hostnames[0].Name)
+	if host.Hostname != "" {
+		value += fmt.Sprintf("<strong>%v</strong><br>", host.Hostname)
 	}
-	value += fmt.Sprintf("%v<br><br>", host.Address.Value)
+	if host.IPv4 != "" {
+		value += fmt.Sprintf("%v<br>", host.IPv4)
+	}
+
+	value += "<br>"
 
 	for i := 0; i < len(host.Ports); i++ {
 		value += fmt.Sprintf(
-			":%v - %v<br><span style=\"color: %v\">(%v %v)</span><br>",
-			host.Ports[i].Portid,
-			host.Ports[i].Service.Name,
+			":%v - %v<br><span style=\"color: %v\">(%v)</span><br>",
+			host.Ports[i].Number,
+			host.Ports[i].ServiceName,
 			serviceColor,
-			host.Ports[i].Service.Product,
-			host.Ports[i].Service.Version,
+			host.Ports[i].ServiceVersion,
 		)
 	}
 

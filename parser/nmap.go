@@ -9,7 +9,7 @@ type Scan struct {
 
 type Host struct {
 	XMLName   xml.Name   `xml:"host" json:"-"`
-	Address   Address    `xml:"address" json:"address"`
+	Address   []Address  `xml:"address" json:"address"`
 	Hostnames []Hostname `xml:"hostnames>hostname" json:"hostnames"`
 	Ports     []Port     `xml:"ports>port" json:"ports"`
 }
