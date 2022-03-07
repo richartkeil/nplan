@@ -15,7 +15,7 @@ func check(e error) {
 	}
 }
 
-func Export(scan core.Scan) {
+func Export(path string, scan *core.Scan) {
 	cols := 5
 	width := 210
 	height := 120
@@ -69,7 +69,7 @@ func Export(scan core.Scan) {
 	output, err := xml.MarshalIndent(mxFile, "", "  ")
 	check(err)
 
-	os.WriteFile("./dist/drawio.drawio", output, 0644)
+	os.WriteFile(path, output, 0644)
 }
 
 func getHostValue(host core.Host) string {
