@@ -23,7 +23,7 @@ func main() {
 	scan6InputFlag := flag.String("scan6", "", "Set the path to the scan6 input .txt file.")
 	exportFlag := flag.Bool("export", false, "Export the current model to a .drawio file.")
 	// Config flags
-	jsonFileFlag := flag.String("json", "./dist/scan.json", "Set the path where to store the .json model file.")
+	jsonFileFlag := flag.String("json", "./dist/model.json", "Set the path where to store the .json model file.")
 	drawioOutputFlag := flag.String("drawio", "./dist/plan.drawio", "Set the path were to store the exported .drawio file.")
 	resetModelFlag := flag.Bool("fresh", false, "Delete the previous .json model and build a new one. Use with caution.")
 

@@ -32,7 +32,7 @@ Usage of nplan:
   -export
     	Export the current model to a .drawio file.
   -json string
-    	Set the path where to store the .json model file. (default "./dist/scan.json")
+    	Set the path where to store the .json model file. (default "./dist/model.json")
   -drawio string
     	Set the path were to store the exported .drawio file. (default "./dist/plan.drawio")
   -fresh
