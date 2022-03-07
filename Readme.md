@@ -2,6 +2,16 @@
 
 Transforms nmap XML into intermediate JSON and generates a basic network plan in the DrawIO XML format.
 
+## Installation
+
+Just run
+
+```sh
+go install github.com/richartkeil/nplan
+```
+
+By default the binary will be installed to `$GOPATH/bin` (which you could add to your $PATH).
+
 ## Usage
 
 ### Building the model
