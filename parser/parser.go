@@ -80,10 +80,14 @@ func convertHost(nmapHost Host) core.Host {
 }
 
 func convertPort(nmapPort Port) core.Port {
+	version := ""
+	if nmapPort.Service.Version != "" || nmapPort.Service.Product != "" {
+		version = fmt.Sprintf("%v %v", nmapPort.Service.Product, nmapPort.Service.Version)
+	}
 	return core.Port{
 		Protocol:       nmapPort.Protocol,
 		Number:         nmapPort.Portid,
 		ServiceName:    nmapPort.Service.Name,
-		ServiceVersion: fmt.Sprintf("%v %v", nmapPort.Service.Product, nmapPort.Service.Version),
+		ServiceVersion: version,
 	}
 }
