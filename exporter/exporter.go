@@ -17,8 +17,8 @@ func check(e error) {
 
 func Export(path string, scan *core.Scan) {
 	cols := 5
-	width := 210
-	height := 120
+	width := 260
+	height := 140
 	padding := 30
 
 	cells := make([]MxCell, 0)
@@ -96,6 +96,15 @@ func getHostValue(host core.Host) string {
 			serviceColor,
 			port.ServiceVersion,
 		)
+		for _, hostKey := range port.HostKeys {
+			if hostKey.Type == "ssh-rsa" {
+				value += fmt.Sprintf(
+					"<span style=\"color: %v\">(RSA: %v)</span><br>",
+					serviceColor,
+					port.HostKeys[0].Fingerprint,
+				)
+			}
+		}
 	}
 
 	return value
