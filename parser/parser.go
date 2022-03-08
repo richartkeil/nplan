@@ -29,8 +29,13 @@ func ParseScan6(path string) []core.Host {
 	data, err := os.ReadFile(path)
 	check(err)
 
-	lowerPart := strings.Split(string(data), "Global addresses:\n")[1]
-	lines := strings.Split(lowerPart, "\n")
+	output := strings.TrimSpace(string(data))
+
+	// If scan has global and local addresses, we only want global addresses
+	if strings.Contains(output, "Global addresses") {
+		output = strings.Split(output, "Global addresses:\n")[1]
+	}
+	lines := strings.Split(output, "\n")
 
 	var hosts []core.Host
 	for _, line := range lines {
