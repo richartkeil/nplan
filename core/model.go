@@ -21,6 +21,7 @@ type Port struct {
 }
 
 type HostKey struct {
-	Type string `json:"type"`
-	Key  string `json:"key"`
+	Type        string `json:"type"`
+	Key         string `json:"key"`
+	Fingerprint string `json:"fingerprint"`
 }

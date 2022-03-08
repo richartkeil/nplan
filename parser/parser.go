@@ -103,18 +103,17 @@ func convertPort(nmapPort Port) core.Port {
 }
 
 func convertKey(nmapTable Table) core.HostKey {
-	key_type := ""
-	key := ""
+	var key core.HostKey
 	for _, element := range nmapTable.Elements {
 		if element.Key == "type" {
-			key_type = element.Value
+			key.Type = element.Value
 		}
 		if element.Key == "key" {
-			key = element.Value
+			key.Key = element.Value
+		}
+		if element.Key == "fingerprint" {
+			key.Fingerprint = element.Value
 		}
 	}
-	return core.HostKey{
-		Type: key_type,
-		Key:  key,
-	}
+	return key
 }
