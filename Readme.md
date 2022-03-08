@@ -12,6 +12,10 @@ go install github.com/richartkeil/nplan
 
 By default the binary will be installed to `$GOPATH/bin` (which you could add to your $PATH).
 
+```
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+```
+
 ## Usage
 
 ### Building the model
