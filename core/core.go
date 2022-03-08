@@ -85,14 +85,15 @@ func mergePort(port *Port, newPort Port) *Port {
 func mergeKeys(port *Port, newPort Port) {
 	if port.HostKeys == nil {
 		port.HostKeys = newPort.HostKeys
-	} else {
-		for _, hostKey := range newPort.HostKeys {
-			existingKey := findKeyByType(port, hostKey)
-			if existingKey != nil {
-				*existingKey = hostKey
-			} else {
-				port.HostKeys = append(port.HostKeys, hostKey)
-			}
+		return
+	}
+
+	for _, hostKey := range newPort.HostKeys {
+		existingKey := findKeyByType(port, hostKey)
+		if existingKey != nil {
+			*existingKey = hostKey
+		} else {
+			port.HostKeys = append(port.HostKeys, hostKey)
 		}
 	}
 }
