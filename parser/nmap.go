@@ -30,6 +30,7 @@ type Port struct {
 	Protocol string   `xml:"protocol,attr" json:"protocol"`
 	Portid   int      `xml:"portid,attr" json:"portid"`
 	Service  Service  `xml:"service" json:"service"`
+	Tables   []Table  `xml:"script>table" json:"keys"`
 }
 
 type Service struct {
@@ -37,4 +38,15 @@ type Service struct {
 	Name    string   `xml:"name,attr" json:"name"`
 	Product string   `xml:"product,attr" json:"product"`
 	Version string   `xml:"version,attr" json:"version"`
+}
+
+type Table struct {
+	XMLName  xml.Name  `xml:"table" json:"-"`
+	Elements []Element `xml:"elem" json:"elements"`
+}
+
+type Element struct {
+	XMLName xml.Name `xml:"elem" json:"-"`
+	Key     string   `xml:"key,attr" json:"key"`
+	Value   string   `xml:",innerxml" json:"value"`
 }

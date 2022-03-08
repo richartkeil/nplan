@@ -84,10 +84,32 @@ func convertPort(nmapPort Port) core.Port {
 	if nmapPort.Service.Version != "" || nmapPort.Service.Product != "" {
 		version = fmt.Sprintf("%v %v", nmapPort.Service.Product, nmapPort.Service.Version)
 	}
-	return core.Port{
+
+	port := core.Port{
 		Protocol:       nmapPort.Protocol,
 		Number:         nmapPort.Portid,
 		ServiceName:    nmapPort.Service.Name,
 		ServiceVersion: version,
+	}
+	for _, table := range nmapPort.Tables {
+		port.HostKeys = append(port.HostKeys, convertKey(table))
+	}
+	return port
+}
+
+func convertKey(nmapTable Table) core.HostKey {
+	key_type := ""
+	key := ""
+	for _, element := range nmapTable.Elements {
+		if element.Key == "type" {
+			key_type = element.Value
+		}
+		if element.Key == "key" {
+			key = element.Value
+		}
+	}
+	return core.HostKey{
+		Type: key_type,
+		Key:  key,
 	}
 }

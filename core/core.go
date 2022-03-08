@@ -78,5 +78,30 @@ func mergePort(port *Port, newPort Port) *Port {
 	if newPort.ServiceVersion != "" {
 		port.ServiceVersion = newPort.ServiceVersion
 	}
+	mergeKeys(port, newPort)
 	return port
+}
+
+func mergeKeys(port *Port, newPort Port) {
+	if port.HostKeys == nil {
+		port.HostKeys = newPort.HostKeys
+	} else {
+		for _, hostKey := range newPort.HostKeys {
+			existingKey := findKeyByType(port, hostKey)
+			if existingKey != nil {
+				*existingKey = hostKey
+			} else {
+				port.HostKeys = append(port.HostKeys, hostKey)
+			}
+		}
+	}
+}
+
+func findKeyByType(port *Port, newKey HostKey) *HostKey {
+	for i, key := range port.HostKeys {
+		if key.Type == newKey.Type {
+			return &port.HostKeys[i]
+		}
+	}
+	return nil
 }
