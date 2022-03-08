@@ -12,7 +12,7 @@ import (
 )
 
 var defaultModelPath = "./dist/model.json"
-var defaultDrawioPath = "./dist/drawio.json"
+var defaultDrawioPath = "./dist/drawio.drawio"
 
 func check(e error) {
 	if e != nil {
