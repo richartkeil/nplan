@@ -18,7 +18,7 @@ func check(e error) {
 func Export(path string, scan *core.Scan) {
 	cols := 5
 	width := 260
-	height := 140
+	height := 160
 	padding := 30
 
 	cells := make([]MxCell, 0)
@@ -74,13 +74,18 @@ func Export(path string, scan *core.Scan) {
 
 func getHostValue(host core.Host) string {
 	serviceColor := "#bbb"
+	headerFontSize := 16
 
 	value := ""
 	if host.Hostname != "" {
-		value += fmt.Sprintf("<strong>%v</strong><br>", host.Hostname)
+		value += fmt.Sprintf("<i>%v</i><br><br>", host.Hostname)
 	}
 	if host.IPv4 != "" {
-		value += fmt.Sprintf("%v<br>", host.IPv4)
+		value += fmt.Sprintf(
+			"<strong style=\"font-size: %vpx\">%v</strong><br>",
+			headerFontSize,
+			host.IPv4,
+		)
 	}
 	if host.IPv6 != "" {
 		value += fmt.Sprintf("%v<br>", host.IPv6)
