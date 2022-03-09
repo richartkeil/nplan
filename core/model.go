@@ -10,6 +10,7 @@ type Host struct {
 	MAC      string `json:"mac"`
 	Hostname string `json:"hostname"`
 	Ports    []Port `json:"ports"`
+	Hops     int    `json:"hop_distance,omitempty"`
 }
 
 type Port struct {
