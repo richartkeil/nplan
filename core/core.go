@@ -50,6 +50,9 @@ func mergeHost(hostPtr *Host, newHost Host) *Host {
 	if newHost.Hops != 0 {
 		hostPtr.Hops = newHost.Hops
 	}
+	if newHost.OS != "" {
+		hostPtr.OS = newHost.OS
+	}
 
 	for _, newPort := range newHost.Ports {
 		existingPort := findPortByNumber(hostPtr, newPort.Number)

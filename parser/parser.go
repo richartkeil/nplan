@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
+	"strconv"
 	"github.com/richartkeil/nplan/core"
 )
 
@@ -81,7 +81,7 @@ func convertHost(nmapHost Host) core.Host {
 		host.Ports = append(host.Ports, convertPort(port))
 	}
 	host.Hops = nmapHost.Distance.Value
-
+	host.OS = convertOS(nmapHost.OSMatches)
 	return host
 }
 
@@ -101,6 +101,17 @@ func convertPort(nmapPort Port) core.Port {
 		port.HostKeys = append(port.HostKeys, convertKey(table))
 	}
 	return port
+}
+
+func convertOS(nmapOSMatches []OS) string {
+	if len(nmapOSMatches) < 1 {
+		return ""
+	}
+	match := nmapOSMatches[0]
+	if match.Accuracy > 90 {
+		return match.Name
+	}
+	return match.Name + " - " + strconv.Itoa(match.Accuracy) + "%"
 }
 
 func convertKey(nmapTable Table) core.HostKey {
