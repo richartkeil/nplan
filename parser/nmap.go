@@ -12,11 +12,19 @@ type Host struct {
 	Address   []Address  `xml:"address" json:"address"`
 	Hostnames []Hostname `xml:"hostnames>hostname" json:"hostnames"`
 	Ports     []Port     `xml:"ports>port" json:"ports"`
-	Distance  Distance 	 `xml:"distance" json:"distance"`
+	OSMatches []OS       `xml:"os>osmatch" json:"osmatches"`
+	Distance  Distance   `xml:"distance" json:"distance"`
 }
+
+type OS struct {
+	XMLName  xml.Name `xml:"osmatch" json:"-"`
+	Name     string   `xml:"name,attr" json:"name"`
+	Accuracy int      `xml:"accuracy,attr" json:"accuracy"`
+}
+
 type Distance struct {
-	XMLName   xml.Name   `xml:"distance" json:"-"`
-	Value 	  int        `xml:"value,attr" json:"value"`
+	XMLName xml.Name `xml:"distance" json:"-"`
+	Value   int      `xml:"value,attr" json:"value"`
 }
 
 type Address struct {

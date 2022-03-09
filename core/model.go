@@ -11,6 +11,7 @@ type Host struct {
 	Hostname string `json:"hostname"`
 	Ports    []Port `json:"ports"`
 	Hops     int    `json:"hop_distance,omitempty"`
+	OS       string `json:"os,omitempty"`
 }
 
 type Port struct {

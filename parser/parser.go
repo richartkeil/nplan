@@ -82,6 +82,7 @@ func convertHost(nmapHost Host) core.Host {
 	}
 
 	host.Hops = nmapHost.Distance.Value
+	host.OS = getHostOS(nmapHost.OSMatches)
 
 	return host
 }
@@ -102,6 +103,15 @@ func convertPort(nmapPort Port) core.Port {
 		port.HostKeys = append(port.HostKeys, convertKey(table))
 	}
 	return port
+}
+
+func getHostOS(nmapOSMatches []OS) string {
+	if len(nmapOSMatches) < 1 {
+		return ""
+	}
+	// Nmap sorts OS matches by accuracy, so we take the first one:
+	match := nmapOSMatches[0]
+	return fmt.Sprintf("%v (%v%%)", match.Name, match.Accuracy)
 }
 
 func convertKey(nmapTable Table) core.HostKey {
