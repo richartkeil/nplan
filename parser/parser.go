@@ -80,6 +80,7 @@ func convertHost(nmapHost Host) core.Host {
 	for _, port := range nmapHost.Ports {
 		host.Ports = append(host.Ports, convertPort(port))
 	}
+	host.Hops = nmapHost.Distance.Value
 
 	return host
 }
