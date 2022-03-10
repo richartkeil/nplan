@@ -30,29 +30,7 @@ func Export(path string, scan *core.Scan) {
 		Id:     "1",
 		Parent: "0",
 	})
-	currentX := 0
-	currentY := 0
-	for i, host := range scan.Hosts {
-		cells = append(cells, MxCell{
-			Id:     uuid.NewString(),
-			Value:  getHostValue(host),
-			Parent: "1",
-			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
-			Vertex: "1",
-			MxGeometry: &MxGeometry{
-				X:      fmt.Sprint(currentX),
-				Y:      fmt.Sprint(currentY),
-				Width:  fmt.Sprint(hostWidth),
-				Height: fmt.Sprint(getHostHeight(&host)),
-				As:     "geometry",
-			},
-		})
-		currentY += getHostHeight(&host) + padding
-		if (i+1)%rows == 0 {
-			currentX += hostWidth + padding
-			currentY = 0
-		}
-	}
+	cells = addHosts(cells, scan)
 
 	mxFile := MxFile{
 		Diagram: &Diagram{
@@ -78,6 +56,34 @@ func Export(path string, scan *core.Scan) {
 	check(err)
 
 	os.WriteFile(path, output, 0644)
+}
+
+func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
+	currentX := 0
+	currentY := 0
+	for i, host := range scan.Hosts {
+		cells = append(cells, MxCell{
+			Id:     uuid.NewString(),
+			Value:  getHostValue(host),
+			Parent: "1",
+			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
+			Vertex: "1",
+			MxGeometry: &MxGeometry{
+				X:      fmt.Sprint(currentX),
+				Y:      fmt.Sprint(currentY),
+				Width:  fmt.Sprint(hostWidth),
+				Height: fmt.Sprint(getHostHeight(&host)),
+				As:     "geometry",
+			},
+		})
+		currentY += getHostHeight(&host) + padding
+		if (i+1)%rows == 0 {
+			currentX += hostWidth + padding
+			currentY = 0
+		}
+	}
+
+	return cells
 }
 
 func getHostHeight(host *core.Host) int {
