@@ -94,13 +94,14 @@ func getHostValue(host core.Host) string {
 	value += "<br>"
 
 	for _, port := range host.Ports {
-		value += fmt.Sprintf(
-			":%v - %v<br><span style=\"color: %v\">(%v)</span><br>",
-			port.Number,
-			port.ServiceName,
-			serviceColor,
-			port.ServiceVersion,
-		)
+		value += fmt.Sprintf(":%v - %v<br>", port.Number, port.ServiceName)
+		if port.ServiceVersion != "" {
+			value += fmt.Sprintf(
+				"<span style=\"color: %v\">(%v)</span><br>",
+				serviceColor,
+				port.ServiceVersion,
+			)
+		}
 		for _, hostKey := range port.HostKeys {
 			if hostKey.Type == "ssh-rsa" {
 				value += fmt.Sprintf(
