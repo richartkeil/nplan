@@ -9,6 +9,12 @@ import (
 	"github.com/richartkeil/nplan/core"
 )
 
+var rows = 8
+var hostWidth = 260
+var hostHeight = 160
+var additionalHeightPerPort = 20
+var padding = 30
+
 func check(e error) {
 	if e != nil {
 		panic(e)
@@ -16,11 +22,6 @@ func check(e error) {
 }
 
 func Export(path string, scan *core.Scan) {
-	cols := 5
-	width := 260
-	height := 160
-	padding := 30
-
 	cells := make([]MxCell, 0)
 	cells = append(cells, MxCell{
 		Id: "0",
@@ -29,6 +30,8 @@ func Export(path string, scan *core.Scan) {
 		Id:     "1",
 		Parent: "0",
 	})
+	currentX := 0
+	currentY := 0
 	for i, host := range scan.Hosts {
 		cells = append(cells, MxCell{
 			Id:     uuid.NewString(),
@@ -37,13 +40,18 @@ func Export(path string, scan *core.Scan) {
 			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
 			Vertex: "1",
 			MxGeometry: &MxGeometry{
-				X:      fmt.Sprint((i % cols) * (width + padding)),
-				Y:      fmt.Sprint((i / cols) * (height + padding)),
-				Width:  fmt.Sprint(width),
-				Height: fmt.Sprint(height),
+				X:      fmt.Sprint(currentX),
+				Y:      fmt.Sprint(currentY),
+				Width:  fmt.Sprint(hostWidth),
+				Height: fmt.Sprint(getHostHeight(&host)),
 				As:     "geometry",
 			},
 		})
+		currentY += getHostHeight(&host) + padding
+		if (i+1)%rows == 0 {
+			currentX += hostWidth + padding
+			currentY = 0
+		}
 	}
 
 	mxFile := MxFile{
@@ -70,6 +78,10 @@ func Export(path string, scan *core.Scan) {
 	check(err)
 
 	os.WriteFile(path, output, 0644)
+}
+
+func getHostHeight(host *core.Host) int {
+	return hostHeight + len(host.Ports)*additionalHeightPerPort
 }
 
 func getHostValue(host core.Host) string {
