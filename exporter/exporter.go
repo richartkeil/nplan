@@ -9,11 +9,19 @@ import (
 	"github.com/richartkeil/nplan/core"
 )
 
+// Hosts
 var rows = 8
 var hostWidth = 260
 var hostHeight = 160
 var additionalHeightPerPort = 20
 var padding = 30
+
+// Duplicate Fingerprint hosts display
+var dupHostsFingerprintX = -400
+var dupHostsFingerprintY = 0
+var dupHostsFingerprintWidth = 260
+var dupHostsFingerprintHeightPerMac = 15
+var dupHostsFingerprintBaseHeight = 70
 
 func check(e error) {
 	if e != nil {
@@ -31,6 +39,7 @@ func Export(path string, scan *core.Scan) {
 		Parent: "0",
 	})
 	cells = addHosts(cells, scan)
+	cells = addHostsWithSameFingerprint(cells, scan)
 
 	mxFile := MxFile{
 		Diagram: &Diagram{
@@ -83,6 +92,51 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 		}
 	}
 
+	return cells
+}
+
+func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
+	// Group hosts by Fingerprint address
+	hostGroups := make(map[string][]core.Host)
+	for _, host := range scan.Hosts {
+		for _, port := range host.Ports {
+			for _, hostKey := range port.HostKeys {
+				if hostKey.Type == "ssh-rsa" && hostKey.Fingerprint != "" {
+					hostGroups[hostKey.Fingerprint] = append(hostGroups[hostKey.Fingerprint], host)
+				}
+			}
+		}
+	}
+
+	// For each group of hosts with the same Fingerprint create a box
+	currentX := dupHostsFingerprintX
+	currentY := dupHostsFingerprintY
+	for mac, hosts := range hostGroups {
+		// Do not show Fingerprints with only one host:
+		if len(hosts) <= 1 {
+			continue
+		}
+
+		value := fmt.Sprintf("Hosts with RSA Fingerprint<br><strong>%v</strong>:<br><br>", mac)
+		for _, host := range hosts {
+			value += fmt.Sprintf("%v<br>", host.IPv4)
+		}
+		cells = append(cells, MxCell{
+			Id:     uuid.NewString(),
+			Value:  value,
+			Parent: "1",
+			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
+			Vertex: "1",
+			MxGeometry: &MxGeometry{
+				X:      fmt.Sprint(currentX),
+				Y:      fmt.Sprint(currentY),
+				Width:  fmt.Sprint(dupHostsFingerprintWidth),
+				Height: fmt.Sprint(dupHostsFingerprintBaseHeight + len(hosts)*dupHostsFingerprintHeightPerMac),
+				As:     "geometry",
+			},
+		})
+		currentY += dupHostsFingerprintBaseHeight + len(hosts)*dupHostsFingerprintHeightPerMac + padding
+	}
 	return cells
 }
 
