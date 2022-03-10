@@ -14,9 +14,26 @@ func ComplementWithIPv6(scan *Scan, ipv6Hosts *[]Host) *Scan {
 		}
 		if !foundExistingHost {
 			fmt.Printf("[!] Scan6 file contains a host with MAC [%v] and IPv6 [%v] that is not present in the model.\n", ipv6Host.MAC, ipv6Host.IPv6)
+			// Only add the unidentified host if it is not already present:
+			unidentifiedHost := findUnidentifiedHostByIPv6(scan, ipv6Host.IPv6)
+			if unidentifiedHost == nil {
+				scan.UnidentifiedHosts = append(scan.UnidentifiedHosts, UnidentifiedHost{
+					IPv6: ipv6Host.IPv6,
+					MAC:  ipv6Host.MAC,
+				})
+			}
 		}
 	}
 	return scan
+}
+
+func findUnidentifiedHostByIPv6(scan *Scan, ipv6 string) *UnidentifiedHost {
+	for i, host := range scan.UnidentifiedHosts {
+		if host.IPv6 == ipv6 {
+			return &scan.UnidentifiedHosts[i]
+		}
+	}
+	return nil
 }
 
 // Merges an existing scan with a new scan. For that, we check for all new

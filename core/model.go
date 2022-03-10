@@ -1,7 +1,13 @@
 package core
 
 type Scan struct {
-	Hosts []Host `json:"hosts"`
+	Hosts             []Host             `json:"hosts"`
+	UnidentifiedHosts []UnidentifiedHost `json:"unidentified_hosts"`
+}
+
+type UnidentifiedHost struct {
+	IPv6 string `json:"ipv6"`
+	MAC  string `json:"mac"`
 }
 
 type Host struct {

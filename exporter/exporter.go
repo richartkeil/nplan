@@ -23,6 +23,12 @@ var dupHostsFingerprintWidth = 260
 var dupHostsFingerprintHeightPerMac = 15
 var dupHostsFingerprintBaseHeight = 70
 
+// Unidentified hosts
+var unidentifiedHostsX = -700
+var unidentifiedHostsY = 0
+var unidentifiedHostsWidth = 260
+var unidentifiedHostsHeight = 100
+
 func check(e error) {
 	if e != nil {
 		panic(e)
@@ -40,6 +46,7 @@ func Export(path string, scan *core.Scan) {
 	})
 	cells = addHosts(cells, scan)
 	cells = addHostsWithSameFingerprint(cells, scan)
+	cells = addUnidentifiedHosts(cells, scan)
 
 	mxFile := MxFile{
 		Diagram: &Diagram{
@@ -136,6 +143,29 @@ func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
 			},
 		})
 		currentY += dupHostsFingerprintBaseHeight + len(hosts)*dupHostsFingerprintHeightPerMac + padding
+	}
+	return cells
+}
+
+func addUnidentifiedHosts(cells []MxCell, scan *core.Scan) []MxCell {
+	currentX := unidentifiedHostsX
+	currentY := unidentifiedHostsY
+	for _, host := range scan.UnidentifiedHosts {
+		cells = append(cells, MxCell{
+			Id:     uuid.NewString(),
+			Value:  fmt.Sprintf("Unidentified host:<br><br>MAC: %v<br>IPv6: %v", host.MAC, host.IPv6),
+			Parent: "1",
+			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
+			Vertex: "1",
+			MxGeometry: &MxGeometry{
+				X:      fmt.Sprint(currentX),
+				Y:      fmt.Sprint(currentY),
+				Width:  fmt.Sprint(unidentifiedHostsWidth),
+				Height: fmt.Sprint(unidentifiedHostsHeight),
+				As:     "geometry",
+			},
+		})
+		currentY += unidentifiedHostsHeight + padding
 	}
 	return cells
 }
