@@ -113,5 +113,11 @@ func getHostValue(host core.Host) string {
 		}
 	}
 
+	value += "<br>"
+
+	if host.OS != "" {
+		value += fmt.Sprintf("OS: %v<br>", host.OS)
+	}
+
 	return value
 }
