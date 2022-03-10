@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/richartkeil/nplan/core"
@@ -32,6 +33,11 @@ func main() {
 
 	flag.Parse()
 
+	if *nmapInputFlag == "" && *scan6InputFlag == "" {
+		fmt.Println("[!] No input file specified. Use -nmap or -scan6.")
+		return
+	}
+
 	createDistFolder(jsonFileFlag, drawioOutputFlag)
 	scan := loadModel(jsonFileFlag, resetModelFlag)
 
@@ -48,6 +54,7 @@ func main() {
 
 	if *exportFlag {
 		exporter.Export(*drawioOutputFlag, scan)
+		fmt.Printf("[*] Exported plan to %v\n", *drawioOutputFlag)
 	}
 }
 
