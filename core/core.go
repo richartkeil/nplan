@@ -1,12 +1,19 @@
 package core
 
+import "fmt"
+
 // Merges an existing scan with hosts obtained from a scan6 file.
 func ComplementWithIPv6(scan *Scan, ipv6Hosts *[]Host) *Scan {
-	for i, existingHost := range scan.Hosts {
-		for _, ipv6Host := range *ipv6Hosts {
+	for _, ipv6Host := range *ipv6Hosts {
+		foundExistingHost := false
+		for i, existingHost := range scan.Hosts {
 			if existingHost.MAC == ipv6Host.MAC {
 				scan.Hosts[i].IPv6 = ipv6Host.IPv6
+				foundExistingHost = true
 			}
+		}
+		if !foundExistingHost {
+			fmt.Printf("[!] Scan6 file contains a host with MAC [%v] and IPv6 [%v] that is not present in the model.\n", ipv6Host.MAC, ipv6Host.IPv6)
 		}
 	}
 	return scan
