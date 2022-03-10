@@ -33,11 +33,6 @@ func main() {
 
 	flag.Parse()
 
-	if *nmapInputFlag == "" && *scan6InputFlag == "" {
-		fmt.Println("[!] No input file specified. Use -nmap or -scan6.")
-		return
-	}
-
 	createDistFolder(jsonFileFlag, drawioOutputFlag)
 	scan := loadModel(jsonFileFlag, resetModelFlag)
 
