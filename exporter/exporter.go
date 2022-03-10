@@ -75,8 +75,9 @@ func Export(path string, scan *core.Scan) {
 func getHostValue(host core.Host) string {
 	serviceColor := "#bbb"
 	headerFontSize := 16
-
 	value := ""
+
+	// Addresses
 	if host.Hostname != "" {
 		value += fmt.Sprintf("<i>%v</i><br><br>", host.Hostname)
 	}
@@ -91,8 +92,10 @@ func getHostValue(host core.Host) string {
 		value += fmt.Sprintf("%v<br>", host.IPv6)
 	}
 
-	value += "<br>"
-
+	// Ports
+	if len(host.Ports) > 0 {
+		value += "<br>"
+	}
 	for _, port := range host.Ports {
 		value += fmt.Sprintf(":%v - %v<br>", port.Number, port.ServiceName)
 		if port.ServiceVersion != "" {
@@ -113,10 +116,15 @@ func getHostValue(host core.Host) string {
 		}
 	}
 
-	value += "<br>"
-
+	// Misc
+	if (host.OS != "") || (host.Hops != 0) {
+		value += "<br>"
+	}
 	if host.OS != "" {
 		value += fmt.Sprintf("OS: %v<br>", host.OS)
+	}
+	if host.Hops != 0 {
+		value += fmt.Sprintf("Hops: %v<br>", host.Hops)
 	}
 
 	return value
