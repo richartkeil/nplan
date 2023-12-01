@@ -191,7 +191,10 @@ func getHostValue(host core.Host) string {
 		)
 	}
 	if host.IPv6 != "" {
-		value += fmt.Sprintf("%v<br>", host.IPv6)
+		value += fmt.Sprintf("IPv6: %v<br>", host.IPv6)
+	}
+	if host.MAC != "" {
+		value += fmt.Sprintf("MAC: %v<br>", host.MAC)
 	}
 
 	// Ports
