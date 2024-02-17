@@ -10,15 +10,20 @@ import (
 	"github.com/richartkeil/nplan/core"
 )
 
+// Keys
+var keyHeight float32 = 50
+var keyWidth float32 = 22.5
+var keyColorMap = make(map[string]string)
+
 // Hosts
 var rows = 8
 var hostWidth = 260
 var hostHeight = 160
 var additionalHeightPerPort = 20
-var keyOffsetX float32 = 235
-var keyOffsetY float32 = 15
-var keyPadding float32 = 10
-var padding = 30
+var hostKeyOffsetX float32 = 235
+var hostKeyOffsetY float32 = 15
+var hostKeyPadding float32 = 10
+var hostPadding = 30
 
 // Duplicate Fingerprint hosts display
 var dupHostsFingerprintX = -440
@@ -28,16 +33,12 @@ var dupHostsFingerprintBaseHeight = 70
 var dupHostsInsetX = 50
 var dupHostsKeyOffsetX float32 = 0
 var dupHostsKeyOffsetY float32 = 23.75
-var keyHeight float32 = 50
-var keyWidth float32 = 22.5
 
 // Unidentified hosts
 var unidentifiedHostsX = -700
 var unidentifiedHostsY = 0
 var unidentifiedHostsWidth = 260
 var unidentifiedHostsHeight = 100
-
-var keyColorMap = make(map[string]string)
 
 
 func check(e error) {
@@ -110,16 +111,15 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 		for _, port := range host.Ports {
 			for _, hostKey := range port.HostKeys {
 				if (keyColorMap[hostKey.Fingerprint] != "") {
-					cells = append(cells, makeKeyCell(id, keyColorMap[hostKey.Fingerprint], keyOffsetX, keyOffsetY + (keyHeight + keyPadding) * keyCount))	
+					cells = append(cells, makeKeyCell(id, keyColorMap[hostKey.Fingerprint], hostKeyOffsetX, hostKeyOffsetY + (keyHeight + hostKeyPadding) * keyCount))	
 					keyCount += 1
-					continue
 				}
 			}
 		}
 
-		currentY += getHostHeight(&host) + padding
+		currentY += getHostHeight(&host) + hostPadding
 		if (i+1)%rows == 0 {
-			currentX += hostWidth + padding
+			currentX += hostWidth + hostPadding
 			currentY = 0
 		}
 	}
@@ -128,7 +128,7 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 }
 
 func addDuplicateHostKeys(cells []MxCell, scan *core.Scan) []MxCell {
-	// Group hosts by Fingerprint address
+	// Group hosts by host key
 var hostGroups = make(map[core.HostKey][]core.Host)
 	for _, host := range scan.Hosts {
 		for _, port := range host.Ports {
@@ -153,16 +153,16 @@ var hostGroups = make(map[core.HostKey][]core.Host)
 	currentX := dupHostsFingerprintX
 	currentY := dupHostsFingerprintY
 	index := 0
-	for hostKey, hosts := range hostGroups {
+	for key, hosts := range hostGroups {
 		// Do not show Fingerprints with only one host:
 		if len(hosts) <= 1 {
 			continue
 		}
 
 		color := pallete[index].Hex()
-		keyColorMap[hostKey.Fingerprint] = color
+		keyColorMap[key.Fingerprint] = color
 
-		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong>", hostKey.Type, hostKey.Fingerprint)
+		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong>", key.Type, key.Fingerprint)
 		id := uuid.NewString()
 		cells = append(cells, MxCell{
 			Id:     id,
@@ -179,7 +179,7 @@ var hostGroups = make(map[core.HostKey][]core.Host)
 			},
 		})
 		cells = append(cells, makeKeyCell(id, color, dupHostsKeyOffsetX, dupHostsKeyOffsetY))
-		currentY += dupHostsFingerprintBaseHeight + padding
+		currentY += dupHostsFingerprintBaseHeight + hostPadding
 		index += 1
 	}
 	return cells
@@ -203,7 +203,7 @@ func addUnidentifiedHosts(cells []MxCell, scan *core.Scan) []MxCell {
 				As:     "geometry",
 			},
 		})
-		currentY += unidentifiedHostsHeight + padding
+		currentY += unidentifiedHostsHeight + hostPadding
 	}
 	return cells
 }
