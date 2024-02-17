@@ -32,4 +32,5 @@ type HostKey struct {
 	Type        string `json:"type"`
 	Key         string `json:"key"`
 	Fingerprint string `json:"fingerprint"`
+	Color 		 	string `json:"color"`
 }
