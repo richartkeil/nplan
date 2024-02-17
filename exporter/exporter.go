@@ -3,7 +3,6 @@ package exporter
 import (
 	"encoding/xml"
 	"fmt"
-	"math/rand"
 	"os"
 
 	"github.com/google/uuid"
@@ -16,6 +15,9 @@ var rows = 8
 var hostWidth = 260
 var hostHeight = 160
 var additionalHeightPerPort = 20
+var keyOffsetX float32 = 235
+var keyOffsetY float32 = 15
+var keyPadding float32 = 10
 var padding = 30
 
 // Duplicate Fingerprint hosts display
@@ -26,6 +28,8 @@ var dupHostsFingerprintBaseHeight = 70
 var dupHostsInsetX = 50
 var dupHostsKeyOffsetX float32 = 0
 var dupHostsKeyOffsetY float32 = 23.75
+var keyHeight float32 = 50
+var keyWidth float32 = 22.5
 
 // Unidentified hosts
 var unidentifiedHostsX = -700
@@ -33,7 +37,8 @@ var unidentifiedHostsY = 0
 var unidentifiedHostsWidth = 260
 var unidentifiedHostsHeight = 100
 
-var hostGroups = make(map[core.HostKey][]core.Host)
+var keyColorMap = make(map[string]string)
+
 
 func check(e error) {
 	if e != nil {
@@ -50,8 +55,8 @@ func Export(path string, scan *core.Scan) {
 		Id:     "1",
 		Parent: "0",
 	})
+	cells = addDuplicateHostKeys(cells, scan)
 	cells = addHosts(cells, scan)
-	cells = addHostsWithSameFingerprint(cells, scan)
 	cells = addUnidentifiedHosts(cells, scan)
 
 	mxFile := MxFile{
@@ -84,8 +89,9 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 	currentX := 0
 	currentY := 0
 	for i, host := range scan.Hosts {
+		id := uuid.NewString()
 		cells = append(cells, MxCell{
-			Id:     uuid.NewString(),
+			Id:     id,
 			Value:  getHostValue(host),
 			Parent: "1",
 			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
@@ -98,6 +104,19 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 				As:     "geometry",
 			},
 		})
+
+		// Add colored keys
+		keyCount := float32(0)
+		for _, port := range host.Ports {
+			for _, hostKey := range port.HostKeys {
+				if (keyColorMap[hostKey.Fingerprint] != "") {
+					cells = append(cells, makeKeyCell(id, keyColorMap[hostKey.Fingerprint], keyOffsetX, keyOffsetY + (keyHeight + keyPadding) * keyCount))	
+					keyCount += 1
+					continue
+				}
+			}
+		}
+
 		currentY += getHostHeight(&host) + padding
 		if (i+1)%rows == 0 {
 			currentX += hostWidth + padding
@@ -108,35 +127,42 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 	return cells
 }
 
-func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
+func addDuplicateHostKeys(cells []MxCell, scan *core.Scan) []MxCell {
 	// Group hosts by Fingerprint address
+var hostGroups = make(map[core.HostKey][]core.Host)
 	for _, host := range scan.Hosts {
 		for _, port := range host.Ports {
 			for _, hostKey := range port.HostKeys {
 				if hostKey.Fingerprint != "" {
 					hostGroups[hostKey] = append(hostGroups[hostKey], host)
-
 				}
 			}
 		}
 	}
-
-	shuffledPallete := generateColorPallete()
-	index := 0
+	
+	// Get number of groups with more than one host in order to generate a unique color pallete
+	duplicateHostCount := 0
+	for _, hosts := range hostGroups {
+		if len(hosts) > 1 {
+				duplicateHostCount++
+		}
+	}
+	pallete := colorful.FastHappyPalette(duplicateHostCount)
 
 	// For each group of hosts with the same Fingerprint create a box
 	currentX := dupHostsFingerprintX
 	currentY := dupHostsFingerprintY
-	for duplicateKey, hosts := range hostGroups {
-		duplicateKey.Color = shuffledPallete[index].Hex()
-
+	index := 0
+	for hostKey, hosts := range hostGroups {
 		// Do not show Fingerprints with only one host:
 		if len(hosts) <= 1 {
 			continue
 		}
 
+		color := pallete[index].Hex()
+		keyColorMap[hostKey.Fingerprint] = color
 
-		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong>", duplicateKey.Type, duplicateKey.Fingerprint)
+		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong>", hostKey.Type, hostKey.Fingerprint)
 		id := uuid.NewString()
 		cells = append(cells, MxCell{
 			Id:     id,
@@ -152,7 +178,7 @@ func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
 				As:     "geometry",
 			},
 		})
-		cells = append(cells, makeKeyCell(id, duplicateKey.Color, dupHostsKeyOffsetX, dupHostsKeyOffsetY, "rotation=90;"))
+		cells = append(cells, makeKeyCell(id, color, dupHostsKeyOffsetX, dupHostsKeyOffsetY))
 		currentY += dupHostsFingerprintBaseHeight + padding
 		index += 1
 	}
@@ -222,13 +248,6 @@ func getHostValue(host core.Host) string {
 				port.ServiceVersion,
 			)
 		}
-		for _, hostKey := range port.HostKeys {
-			value += fmt.Sprintf(
-				"<span style=\"color: %v\">(Key: %v)</span><br>",
-				serviceColor,
-				hostKey.Fingerprint,
-			)
-		}
 	}
 
 	// Misc
@@ -245,30 +264,19 @@ func getHostValue(host core.Host) string {
 	return value
 }
 
-func makeKeyCell(parentId string, color string, x float32, y float32, styleArgs string) MxCell {
+func makeKeyCell(parentId string, color string, x float32, y float32) MxCell {
 	return MxCell{
 		Id:     uuid.NewString(),
 		Value:  "",
 		Parent: parentId,
-		Style:  fmt.Sprintf("shape=mxgraph.cisco19.key;fillColor=%v;strokeColor=none;%v", color, styleArgs),
+		Style:  fmt.Sprintf("shape=mxgraph.cisco19.key;fillColor=%v;strokeColor=none;rotation=90", color),
 		Vertex: "1",
 		MxGeometry: &MxGeometry{
 			X:      fmt.Sprint(x),
 			Y:      fmt.Sprint(y),
-			Width:  "50",
-			Height: "22.5",
+			Width:  fmt.Sprint(keyHeight),
+			Height: fmt.Sprint(keyWidth),
 			As:     "geometry",
 		},
 	}
-}
-
-// Generate a color pallete for the keys and shuffle it
-func generateColorPallete() []colorful.Color {
-	pallete := colorful.FastHappyPalette(len(hostGroups))
-	shuffledPallete := make([]colorful.Color, len(pallete))
-	perm := rand.Perm(len(pallete))
-	for i, v := range perm {
-			shuffledPallete[v] = pallete[i]
-	}
-	return shuffledPallete
 }
