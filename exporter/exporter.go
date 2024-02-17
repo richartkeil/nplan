@@ -19,13 +19,13 @@ var additionalHeightPerPort = 20
 var padding = 30
 
 // Duplicate Fingerprint hosts display
-var dupHostsFingerprintX = -450
+var dupHostsFingerprintX = -440
 var dupHostsFingerprintY = 0
-var dupHostsFingerprintWidth = 310
-var dupHostsFingerprintHeightPerMac = 20
-var dupHostsFingerprintBaseHeight = 85
-var dupHostsKeyOffsetX = 250
-var dupHostsKeyOffsetY = 10
+var dupHostsFingerprintWidth = 350
+var dupHostsFingerprintBaseHeight = 70
+var dupHostsInsetX = 50
+var dupHostsKeyOffsetX float32 = 0
+var dupHostsKeyOffsetY float32 = 23.75
 
 // Unidentified hosts
 var unidentifiedHostsX = -700
@@ -135,28 +135,25 @@ func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
 			continue
 		}
 
-		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong><br><br><u>IPs:</u><br>", duplicateKey.Type, duplicateKey.Fingerprint)
-		for _, host := range hosts {
-			value += fmt.Sprintf("%v<br>", host.IPv4)
-		}
 
+		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong>", duplicateKey.Type, duplicateKey.Fingerprint)
 		id := uuid.NewString()
 		cells = append(cells, MxCell{
 			Id:     id,
 			Value:  value,
 			Parent: "1",
-			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2;align=left;spacingLeft=10;spacingRight=10;",
+			Style:  fmt.Sprintf("rounded=1;whiteSpace=wrap;html=1;arcSize=2;align=left;spacingLeft=%v", dupHostsInsetX),
 			Vertex: "1",
 			MxGeometry: &MxGeometry{
 				X:      fmt.Sprint(currentX),
 				Y:      fmt.Sprint(currentY),
 				Width:  fmt.Sprint(dupHostsFingerprintWidth),
-				Height: fmt.Sprint(dupHostsFingerprintBaseHeight + len(hosts)*dupHostsFingerprintHeightPerMac),
+				Height: fmt.Sprint(dupHostsFingerprintBaseHeight),
 				As:     "geometry",
 			},
 		})
-		cells = append(cells, makeKeyCell(id, duplicateKey.Color, dupHostsKeyOffsetX, dupHostsKeyOffsetY ))
-		currentY += dupHostsFingerprintBaseHeight + len(hosts)*dupHostsFingerprintHeightPerMac + padding
+		cells = append(cells, makeKeyCell(id, duplicateKey.Color, dupHostsKeyOffsetX, dupHostsKeyOffsetY, "rotation=90;"))
+		currentY += dupHostsFingerprintBaseHeight + padding
 		index += 1
 	}
 	return cells
@@ -248,12 +245,12 @@ func getHostValue(host core.Host) string {
 	return value
 }
 
-func makeKeyCell(parentId string, color string, x int, y int) MxCell {
+func makeKeyCell(parentId string, color string, x float32, y float32, styleArgs string) MxCell {
 	return MxCell{
 		Id:     uuid.NewString(),
 		Value:  "",
 		Parent: parentId,
-		Style:  fmt.Sprintf("shape=mxgraph.cisco19.key;fillColor=%v;strokeColor=none;", color),
+		Style:  fmt.Sprintf("shape=mxgraph.cisco19.key;fillColor=%v;strokeColor=none;%v", color, styleArgs),
 		Vertex: "1",
 		MxGeometry: &MxGeometry{
 			X:      fmt.Sprint(x),
