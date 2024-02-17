@@ -21,7 +21,7 @@ var hostWidth = 260
 var hostHeight = 160
 var additionalHeightPerPort = 20
 var hostKeyOffsetX float32 = 235
-var hostKeyOffsetY float32 = 15
+var hostKeyOffsetY float32 = 5
 var hostKeyPadding float32 = 10
 var hostPadding = 30
 

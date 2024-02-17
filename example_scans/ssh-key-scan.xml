@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.94SVN scan initiated Sat Feb 17 10:48:09 2024 as: nmap -p 22 -e eth1 -oX example_scans/ssh-key-scan.xml -&#45;script=ssh-hostkey,duplicates 10.167.0.0 10.167.0.1 10.167.0.2 10.167.0.3 10.167.0.4 10.167.0.5 10.167.0.6 10.167.0.7 10.167.0.8 10.167.0.9 10.167.0.10 10.167.0.11 10.167.0.12 10.167.0.13 10.167.0.14 10.167.0.15 10.167.0.16 10.167.0.17 10.167.0.18 10.167.0.19 10.167.0.20 10.167.0.21 10.167.0.22 10.167.0.23 10.167.0.24 10.167.0.25 10.167.0.26 10.167.0.27 10.167.0.28 10.167.0.29 10.167.0.30 10.167.0.31 10.167.0.32 10.167.0.33 10.167.0.34 10.167.0.35 10.167.0.36 10.167.0.37 10.167.0.38 10.167.0.39 10.167.0.40 10.167.0.41 10.167.0.42 10.167.0.43 10.167.0.44 10.167.0.45 10.167.0.46 10.167.0.47 10.167.0.48 10.167.0.49 10.167.0.50 10.167.0.51 10.167.0.52 10.167.0.53 10.167.0.54 10.167.0.55 10.167.0.56 10.167.0.57 10.167.0.58 10.167.0.59 10.167.0.60 10.167.0.61 10.167.0.62 10.167.0.63 10.167.0.64 10.167.0.65 10.167.0.66 10.167.0.67 10.167.0.68 10.167.0.69 10.167.0.70 10.167.0.71 10.167.0.72 10.167.0.73 10.167.0.74 10.167.0.75 10.167.0.76 10.167.0.77 10.167.0.78 10.167.0.79 10.167.0.80 10.167.0.81 10.167.0.82 10.167.0.83 10.167.0.84 10.167.0.85 10.167.0.86 10.167.0.87 10.167.0.88 10.167.0.89 10.167.0.90 10.167.0.91 10.167.0.92 10.167.0.93 10.167.0.94 10.167.0.95 10.167.0.96 10.167.0.97 10.167.0.98 10.167.0.99 10.167.0.100 10.167.0.101 10.167.0.102 10.167.0.103 10.167.0.104 10.167.0.105 10.167.0.106 10.167.0.107 10.167.0.108 10.167.0.109 10.167.0.110 10.167.0.111 10.167.0.112 10.167.0.113 10.167.0.114 10.167.0.115 10.167.0.116 10.167.0.117 10.167.0.118 10.167.0.119 10.167.0.120 10.167.0.121 10.167.0.122 10.167.0.123 10.167.0.124 10.167.0.125 10.167.0.126 10.167.0.127 10.167.0.128 10.167.0.129 10.167.0.130 10.167.0.131 10.167.0.132 10.167.0.133 10.167.0.134 10.167.0.135 10.167.0.136 10.167.0.137 10.167.0.138 10.167.0.139 10.167.0.140 10.167.0.141 10.167.0.142 10.167.0.143 10.167.0.144 10.167.0.145 10.167.0.146 10.167.0.147 10.167.0.148 10.167.0.149 10.167.0.150 10.167.0.151 10.167.0.152 10.167.0.153 10.167.0.154 10.167.0.155 10.167.0.156 10.167.0.157 10.167.0.158 10.167.0.159 10.167.0.160 10.167.0.161 10.167.0.162 10.167.0.163 10.167.0.164 10.167.0.165 10.167.0.166 10.167.0.167 10.167.0.168 10.167.0.169 10.167.0.170 10.167.0.171 10.167.0.172 10.167.0.173 10.167.0.174 10.167.0.175 10.167.0.176 10.167.0.177 10.167.0.178 10.167.0.179 10.167.0.180 10.167.0.181 10.167.0.182 10.167.0.183 10.167.0.184 10.167.0.185 10.167.0.186 10.167.0.187 10.167.0.188 10.167.0.189 10.167.0.190 10.167.0.191 10.167.0.192 10.167.0.193 10.167.0.194 10.167.0.195 10.167.0.196 10.167.0.197 10.167.0.198 10.167.0.199 10.167.0.200 10.167.0.201 10.167.0.202 10.167.0.203 10.167.0.204 10.167.0.205 10.167.0.206 10.167.0.207 10.167.0.208 10.167.0.209 10.167.0.210 10.167.0.211 10.167.0.212 10.167.0.213 10.167.0.214 10.167.0.215 10.167.0.216 10.167.0.217 10.167.0.218 10.167.0.219 10.167.0.220 10.167.0.221 10.167.0.222 10.167.0.223 10.167.0.224 10.167.0.225 10.167.0.226 10.167.0.227 10.167.0.228 10.167.0.229 10.167.0.230 10.167.0.231 10.167.0.232 10.167.0.233 10.167.0.234 10.167.0.235 10.167.0.236 10.167.0.237 10.167.0.238 10.167.0.239 10.167.0.240 10.167.0.241 10.167.0.242 10.167.0.243 10.167.0.244 10.167.0.245 10.167.0.246 10.167.0.247 10.167.0.248 10.167.0.249 10.167.0.250 10.167.0.251 10.167.0.252 10.167.0.253 10.167.0.254 10.167.0.255 -->
+<nmaprun scanner="nmap" args="nmap -p 22 -e eth1 -oX example_scans/ssh-key-scan.xml -&#45;script=ssh-hostkey,duplicates 10.167.0.0 10.167.0.1 10.167.0.2 10.167.0.3 10.167.0.4 10.167.0.5 10.167.0.6 10.167.0.7 10.167.0.8 10.167.0.9 10.167.0.10 10.167.0.11 10.167.0.12 10.167.0.13 10.167.0.14 10.167.0.15 10.167.0.16 10.167.0.17 10.167.0.18 10.167.0.19 10.167.0.20 10.167.0.21 10.167.0.22 10.167.0.23 10.167.0.24 10.167.0.25 10.167.0.26 10.167.0.27 10.167.0.28 10.167.0.29 10.167.0.30 10.167.0.31 10.167.0.32 10.167.0.33 10.167.0.34 10.167.0.35 10.167.0.36 10.167.0.37 10.167.0.38 10.167.0.39 10.167.0.40 10.167.0.41 10.167.0.42 10.167.0.43 10.167.0.44 10.167.0.45 10.167.0.46 10.167.0.47 10.167.0.48 10.167.0.49 10.167.0.50 10.167.0.51 10.167.0.52 10.167.0.53 10.167.0.54 10.167.0.55 10.167.0.56 10.167.0.57 10.167.0.58 10.167.0.59 10.167.0.60 10.167.0.61 10.167.0.62 10.167.0.63 10.167.0.64 10.167.0.65 10.167.0.66 10.167.0.67 10.167.0.68 10.167.0.69 10.167.0.70 10.167.0.71 10.167.0.72 10.167.0.73 10.167.0.74 10.167.0.75 10.167.0.76 10.167.0.77 10.167.0.78 10.167.0.79 10.167.0.80 10.167.0.81 10.167.0.82 10.167.0.83 10.167.0.84 10.167.0.85 10.167.0.86 10.167.0.87 10.167.0.88 10.167.0.89 10.167.0.90 10.167.0.91 10.167.0.92 10.167.0.93 10.167.0.94 10.167.0.95 10.167.0.96 10.167.0.97 10.167.0.98 10.167.0.99 10.167.0.100 10.167.0.101 10.167.0.102 10.167.0.103 10.167.0.104 10.167.0.105 10.167.0.106 10.167.0.107 10.167.0.108 10.167.0.109 10.167.0.110 10.167.0.111 10.167.0.112 10.167.0.113 10.167.0.114 10.167.0.115 10.167.0.116 10.167.0.117 10.167.0.118 10.167.0.119 10.167.0.120 10.167.0.121 10.167.0.122 10.167.0.123 10.167.0.124 10.167.0.125 10.167.0.126 10.167.0.127 10.167.0.128 10.167.0.129 10.167.0.130 10.167.0.131 10.167.0.132 10.167.0.133 10.167.0.134 10.167.0.135 10.167.0.136 10.167.0.137 10.167.0.138 10.167.0.139 10.167.0.140 10.167.0.141 10.167.0.142 10.167.0.143 10.167.0.144 10.167.0.145 10.167.0.146 10.167.0.147 10.167.0.148 10.167.0.149 10.167.0.150 10.167.0.151 10.167.0.152 10.167.0.153 10.167.0.154 10.167.0.155 10.167.0.156 10.167.0.157 10.167.0.158 10.167.0.159 10.167.0.160 10.167.0.161 10.167.0.162 10.167.0.163 10.167.0.164 10.167.0.165 10.167.0.166 10.167.0.167 10.167.0.168 10.167.0.169 10.167.0.170 10.167.0.171 10.167.0.172 10.167.0.173 10.167.0.174 10.167.0.175 10.167.0.176 10.167.0.177 10.167.0.178 10.167.0.179 10.167.0.180 10.167.0.181 10.167.0.182 10.167.0.183 10.167.0.184 10.167.0.185 10.167.0.186 10.167.0.187 10.167.0.188 10.167.0.189 10.167.0.190 10.167.0.191 10.167.0.192 10.167.0.193 10.167.0.194 10.167.0.195 10.167.0.196 10.167.0.197 10.167.0.198 10.167.0.199 10.167.0.200 10.167.0.201 10.167.0.202 10.167.0.203 10.167.0.204 10.167.0.205 10.167.0.206 10.167.0.207 10.167.0.208 10.167.0.209 10.167.0.210 10.167.0.211 10.167.0.212 10.167.0.213 10.167.0.214 10.167.0.215 10.167.0.216 10.167.0.217 10.167.0.218 10.167.0.219 10.167.0.220 10.167.0.221 10.167.0.222 10.167.0.223 10.167.0.224 10.167.0.225 10.167.0.226 10.167.0.227 10.167.0.228 10.167.0.229 10.167.0.230 10.167.0.231 10.167.0.232 10.167.0.233 10.167.0.234 10.167.0.235 10.167.0.236 10.167.0.237 10.167.0.238 10.167.0.239 10.167.0.240 10.167.0.241 10.167.0.242 10.167.0.243 10.167.0.244 10.167.0.245 10.167.0.246 10.167.0.247 10.167.0.248 10.167.0.249 10.167.0.250 10.167.0.251 10.167.0.252 10.167.0.253 10.167.0.254 10.167.0.255" start="1708163289" startstr="Sat Feb 17 10:48:09 2024" version="7.94SVN" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="1" services="22"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.2" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.5" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.1" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.20" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.23" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.24" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.27" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.29" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.35" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.36" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.33" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.34" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.21" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.22" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.107" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.212" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.25" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.111" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.106" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.114" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.132" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.153" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.26" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.156" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.167.0.240" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="syn-ack" reason_ttl="0"/>
+<address addr="10.167.0.1" addrtype="ipv4"/>
+<hostnames>
+<hostname name="octopus.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 4b:14:37:93:e6:27:80:ad:9e:58:78:b0:40:de:56:5a (ECDSA)&#xa;  256 37:6e:0f:7a:63:d0:62:bf:93:89:eb:a2:93:bd:aa:72 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">4b143793e62780ad9e5878b040de565a</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNKyDcM6SW2qAfGJOnoeju559AvxBw15oQUJ0Jt2q2DI+VPrAAV7TExl9lDDiRU+TnRvfgWXD+l2PyFtgzhpmqI=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">376e0f7a63d062bf9389eba293bdaa72</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAILd8cEozAu1ErRjTmFVQEZxWOafjMceVPer3u+L9lXph</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="7854" rttvar="8006" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="syn-ack" reason_ttl="0"/>
+<address addr="10.167.0.2" addrtype="ipv4"/>
+<hostnames>
+<hostname name="flag-http-server.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="4332" rttvar="4357" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.5" addrtype="ipv4"/>
+<hostnames>
+<hostname name="packet-challenge.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 4a:f2:a8:24:e4:8f:6c:1f:c2:48:31:0d:6b:1b:f8:07 (ECDSA)&#xa;  256 ff:9b:03:31:14:f6:f3:14:7f:cf:a0:40:25:53:07:a9 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">4af2a824e48f6c1fc248310d6b1bf807</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDm13XOSAVJpUfO6/qwPougLGavrdBps9j300vhYtiz1om0QJrTlxf/6+2zvCMmA4NVqnbvsJQl1VrZn567jwos=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">ff9b033114f6f3147fcfa040255307a9</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIBXPK64yLtM3msySkQKD02j/5YudEj09i4TKSMiXCNWT</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="5306" rttvar="4456" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.20" addrtype="ipv4"/>
+<hostnames>
+<hostname name="zero.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 24:ad:00:3b:b9:23:14:ed:71:e6:e5:97:51:ef:24:ee (ECDSA)&#xa;  256 7d:35:0e:77:5f:d5:20:e2:ee:e5:5e:56:d9:b8:b3:e9 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">24ad003bb92314ed71e6e59751ef24ee</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM5DwxJId+/OsHRRZAKAQ4kGoSZGYO2a3/t5k9c9jHDu2z5Gq8L5e97YqCvMC9wRkCmmqrTRzRT95clEwsLlfVI=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">7d350e775fd520e2eee55e56d9b8b3e9</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIKa1LWZwCV3DXR0BJQ9a/+aei6QaNVgOkCi4Tu8qbLfg</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="5637" rttvar="4587" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.21" addrtype="ipv4"/>
+<hostnames>
+<hostname name="one.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 24:ad:00:3b:b9:23:14:ed:71:e6:e5:97:51:ef:24:ee (ECDSA)&#xa;  256 7d:35:0e:77:5f:d5:20:e2:ee:e5:5e:56:d9:b8:b3:e9 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">24ad003bb92314ed71e6e59751ef24ee</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM5DwxJId+/OsHRRZAKAQ4kGoSZGYO2a3/t5k9c9jHDu2z5Gq8L5e97YqCvMC9wRkCmmqrTRzRT95clEwsLlfVI=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">7d350e775fd520e2eee55e56d9b8b3e9</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIKa1LWZwCV3DXR0BJQ9a/+aei6QaNVgOkCi4Tu8qbLfg</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="29739" rttvar="27948" to="141531"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.22" addrtype="ipv4"/>
+<hostnames>
+<hostname name="two.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 24:ad:00:3b:b9:23:14:ed:71:e6:e5:97:51:ef:24:ee (ECDSA)&#xa;  256 7d:35:0e:77:5f:d5:20:e2:ee:e5:5e:56:d9:b8:b3:e9 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">24ad003bb92314ed71e6e59751ef24ee</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM5DwxJId+/OsHRRZAKAQ4kGoSZGYO2a3/t5k9c9jHDu2z5Gq8L5e97YqCvMC9wRkCmmqrTRzRT95clEwsLlfVI=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">7d350e775fd520e2eee55e56d9b8b3e9</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIKa1LWZwCV3DXR0BJQ9a/+aei6QaNVgOkCi4Tu8qbLfg</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="29416" rttvar="30701" to="152220"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.23" addrtype="ipv4"/>
+<hostnames>
+<hostname name="three.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 07:04:e5:4d:4b:53:dd:02:5f:39:1d:ef:c5:6e:4d:9a (ECDSA)&#xa;  256 13:6b:2c:8a:47:30:a3:5b:fa:24:30:49:19:93:4c:db (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">0704e54d4b53dd025f391defc56e4d9a</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCa/PAu/8iVzS+zb+nhQwlxdbb9daopTo9y8Moonp+YT9e0mIapnmkjBkQL3lKkPBP09MbzAgj39sTIdhzgUu2M=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">136b2c8a4730a35bfa24304919934cdb</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAINpPRMdY5V3ipEqBNjpOFjO8mcHBv7loqXTF7wL7jhWW</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="6686" rttvar="5137" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.24" addrtype="ipv4"/>
+<hostnames>
+<hostname name="four.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 c0:08:b4:df:21:50:b7:84:e5:0a:8d:a8:e9:fd:fd:ac (ECDSA)&#xa;  256 4b:5d:e2:d7:67:e9:f6:c1:10:3f:a8:12:42:8d:f6:bf (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">c008b4df2150b784e50a8da8e9fdfdac</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPWByZLiNwTlZb9IPg5+43XGSwkAg44TH6HVXEzblAq9+QNIlAXljfozqs98KyXdOBbvu4hzoeIXUzboMPpiKd8=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">4b5de2d767e9f6c1103fa812428df6bf</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIH+Z4beBPkrHdxFnEdnIoOeHSSU9MEK2WPN3LFEbnmCe</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="6551" rttvar="5754" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.25" addrtype="ipv4"/>
+<hostnames>
+<hostname name="five.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 24:ad:00:3b:b9:23:14:ed:71:e6:e5:97:51:ef:24:ee (ECDSA)&#xa;  256 7d:35:0e:77:5f:d5:20:e2:ee:e5:5e:56:d9:b8:b3:e9 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">24ad003bb92314ed71e6e59751ef24ee</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBM5DwxJId+/OsHRRZAKAQ4kGoSZGYO2a3/t5k9c9jHDu2z5Gq8L5e97YqCvMC9wRkCmmqrTRzRT95clEwsLlfVI=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">7d350e775fd520e2eee55e56d9b8b3e9</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIKa1LWZwCV3DXR0BJQ9a/+aei6QaNVgOkCi4Tu8qbLfg</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="5072" rttvar="4334" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.26" addrtype="ipv4"/>
+<hostnames>
+<hostname name="six.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 ae:2f:19:4a:7b:03:12:f7:01:2b:73:88:bd:0a:d7:ae (ECDSA)&#xa;  256 eb:e2:bb:60:05:cd:d1:1d:19:51:d9:4f:f2:43:e5:7c (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">ae2f194a7b0312f7012b7388bd0ad7ae</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOdfcvQfJ068Xh7TW6fziW8xXFJhICzTMrhaLE4TmP3XT93RC10JyG7MgMQqKRGwLXzDOr1CRZ7Uc17CGSdWOZc=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">ebe2bb6005cdd11d1951d94ff243e57c</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAILOfSnTfE/44EdnFAX1KQUiXd4aMxT9w+btyr9xfZmim</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="4709" rttvar="4395" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.27" addrtype="ipv4"/>
+<hostnames>
+<hostname name="seven.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 bd:41:fc:cc:7d:47:51:fb:a9:ae:c9:05:b9:e9:45:4d (ECDSA)&#xa;  256 af:a3:04:28:53:b0:dc:cb:65:92:b8:82:5b:4b:9b:ca (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">bd41fccc7d4751fba9aec905b9e9454d</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBANjOOYK+5lkqlSdfh/6dvOixLtXYqrCgZzBCXL3VCfH10vkTzF8la9w9M+uTDC5rPPMdDoWW+uZnRKO37hOULs=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">afa3042853b0dccb6592b8825b4b9bca</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIM/mylGCddBEh2PbE9oB32G0TBn0XeHEaXFqImeiudB8</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="4701" rttvar="4364" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.29" addrtype="ipv4"/>
+<hostnames>
+<hostname name="nine.reverse-engineering.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 c0:08:b4:df:21:50:b7:84:e5:0a:8d:a8:e9:fd:fd:ac (ECDSA)&#xa;  256 4b:5d:e2:d7:67:e9:f6:c1:10:3f:a8:12:42:8d:f6:bf (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">c008b4df2150b784e50a8da8e9fdfdac</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPWByZLiNwTlZb9IPg5+43XGSwkAg44TH6HVXEzblAq9+QNIlAXljfozqs98KyXdOBbvu4hzoeIXUzboMPpiKd8=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">4b5de2d767e9f6c1103fa812428df6bf</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIH+Z4beBPkrHdxFnEdnIoOeHSSU9MEK2WPN3LFEbnmCe</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="3682" rttvar="3959" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.33" addrtype="ipv4"/>
+<hostnames>
+<hostname name="three.sandbox-escape.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 39:06:82:41:c7:4e:31:a6:90:f8:5e:87:d7:83:70:1c (ECDSA)&#xa;  256 94:53:6e:27:44:c3:93:59:bb:f3:2f:6a:20:b9:eb:a2 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">39068241c74e31a690f85e87d783701c</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHSwabZJyvOSClyToPWwKa/oAK5VfGt7rdG+p4mOVMuws9lwakXpjYPSSJHLPMy5GHIzjWkBoa9dXqBR3dkQ4y0=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">94536e2744c39359bbf32f6a20b9eba2</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIL9eX7OXTo2gC50E83qPIcPrqLVofVlrAYgi2l0c9A2n</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="6262" rttvar="5171" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.34" addrtype="ipv4"/>
+<hostnames>
+<hostname name="four.sandbox-escape.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 de:9a:88:2c:ec:a2:e3:31:d1:41:88:6f:9c:1b:2f:e1 (ECDSA)&#xa;  256 1b:b0:1b:16:a2:97:8e:1b:63:7b:02:f9:3a:1c:15:94 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">de9a882ceca2e331d141886f9c1b2fe1</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBnbWXfzMXNFaJ6h2PBortcemZTs8PU3RwPgOzQIu3AlRLigiu2cXkLISguSti9zMAb8EaSsjzrBHsS/rUvgG8s=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">1bb01b16a2978e1b637b02f93a1c1594</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAILr4bEC7YfXkLUqBWW2XJNdBvkiqHzoGND3c3Q3wkLBe</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="6341" rttvar="4793" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.35" addrtype="ipv4"/>
+<hostnames>
+<hostname name="five.sandbox-escape.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 50:b1:f3:2b:1d:34:89:e5:7e:2a:69:c8:98:e7:79:49 (ECDSA)&#xa;  256 56:8e:c6:b3:48:56:dc:b6:83:71:7c:1f:5c:d5:d1:e1 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">50b1f32b1d3489e57e2a69c898e77949</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFe0Pi6+FoefPkaenPk8mES7vCwSS6xzGuRGWAff6UEOeqfa3EcWPBHuWd3O0265yLnWDFvppBFm/xClC/A8leA=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">568ec6b34856dcb683717c1f5cd5d1e1</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIP6vCfbgLLuDeVTmSkwbcz4THhKiGOM63fXeVmQadjWL</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="4124" rttvar="4064" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.36" addrtype="ipv4"/>
+<hostnames>
+<hostname name="six.sandbox-escape.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 1e:cc:7b:3b:15:55:fa:f8:e6:89:3c:86:99:91:b8:aa (ECDSA)&#xa;  256 65:1a:6d:26:79:52:7c:09:96:12:1c:37:46:a7:8c:be (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">1ecc7b3b1555faf8e6893c869991b8aa</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCcTeUkdZYQmZ2lN71d5GAM3Njc+uxcbnCI7YXUtBC4gLQqkyS4pR8L6wrTK8YwuTfYV9lzN3u5rM/LJX0ZqpWQ=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">651a6d2679527c0996121c3746a78cbe</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIAtjj00XNfhlBdok9+p3hqnSTVBXBDp54gUZpRv8d8So</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="4008" rttvar="4015" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.106" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" method="table" conf="3"/><script id="ssh-hostkey" output="&#xa;  256 18:8a:4f:18:1e:4b:86:ed:3b:59:77:90:47:4e:6d:f4 (ECDSA)&#xa;  256 93:f6:77:bf:21:69:42:00:d3:1e:c8:99:19:6c:42:32 (ED25519)"><table>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">188a4f181e4b86ed3b597790474e6df4</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHvpPAhpO5vjtgoSsp84nv8UpG713fCIt6qqn2Uz0mCN8dj1qQIjJJe+BPvoHRf1/XHUNPu3jmQotvNKxYafauc=</elem>
+<elem key="bits">256</elem>
+</table>
+<table>
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">93f677bf21694200d31ec899196c4232</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIKI0yMB3RMEkVe4a5E2VxDy040uFL7Luv3AvNhiRnssL</elem>
+<elem key="bits">256</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="25601" rttvar="26361" to="131045"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.107" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="4980" rttvar="4474" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="syn-ack" reason_ttl="0"/>
+<address addr="10.167.0.111" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="3965" rttvar="3782" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="syn-ack" reason_ttl="0"/>
+<address addr="10.167.0.114" addrtype="ipv4"/>
+<hostnames>
+<hostname name="nextcloud.user.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="25181" rttvar="26735" to="132121"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="syn-ack" reason_ttl="0"/>
+<address addr="10.167.0.132" addrtype="ipv4"/>
+<hostnames>
+<hostname name="random-webserver.user.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="4456" rttvar="4883" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.153" addrtype="ipv4"/>
+<hostnames>
+<hostname name="jimmys-desktop.user.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="3973" rttvar="4999" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.156" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="3476" rttvar="4162" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="conn-refused" reason_ttl="0"/>
+<address addr="10.167.0.212" addrtype="ipv4"/>
+<hostnames>
+<hostname name="kali.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="350" rttvar="3884" to="100000"/>
+</host>
+<host starttime="1708163302" endtime="1708163303"><status state="up" reason="syn-ack" reason_ttl="0"/>
+<address addr="10.167.0.240" addrtype="ipv4"/>
+<hostnames>
+<hostname name="jukebox.user.scenario.cip.institute" type="PTR"/>
+</hostnames>
+<ports><port protocol="tcp" portid="22"><state state="closed" reason="conn-refused" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+</ports>
+<times srtt="2352" rttvar="3067" to="100000"/>
+</host>
+<postscript><script id="ssh-hostkey" output="Possible duplicate hosts&#xa;Key 256 c0:08:b4:df:21:50:b7:84:e5:0a:8d:a8:e9:fd:fd:ac (ECDSA) used by:&#xa;  10.167.0.24&#xa;  10.167.0.29&#xa;Key 256 24:ad:00:3b:b9:23:14:ed:71:e6:e5:97:51:ef:24:ee (ECDSA) used by:&#xa;  10.167.0.20&#xa;  10.167.0.21&#xa;  10.167.0.22&#xa;  10.167.0.25&#xa;Key 256 4b:5d:e2:d7:67:e9:f6:c1:10:3f:a8:12:42:8d:f6:bf (ED25519) used by:&#xa;  10.167.0.24&#xa;  10.167.0.29&#xa;Key 256 7d:35:0e:77:5f:d5:20:e2:ee:e5:5e:56:d9:b8:b3:e9 (ED25519) used by:&#xa;  10.167.0.20&#xa;  10.167.0.21&#xa;  10.167.0.22&#xa;  10.167.0.25"><table>
+<table key="key">
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">c0:08:b4:df:21:50:b7:84:e5:0a:8d:a8:e9:fd:fd:ac</elem>
+<elem key="bits">256</elem>
+</table>
+<table key="hosts">
+<elem>10.167.0.24</elem>
+<elem>10.167.0.29</elem>
+</table>
+</table>
+<table>
+<table key="key">
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="fingerprint">24:ad:00:3b:b9:23:14:ed:71:e6:e5:97:51:ef:24:ee</elem>
+<elem key="bits">256</elem>
+</table>
+<table key="hosts">
+<elem>10.167.0.20</elem>
+<elem>10.167.0.21</elem>
+<elem>10.167.0.22</elem>
+<elem>10.167.0.25</elem>
+</table>
+</table>
+<table>
+<table key="key">
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">4b:5d:e2:d7:67:e9:f6:c1:10:3f:a8:12:42:8d:f6:bf</elem>
+<elem key="bits">256</elem>
+</table>
+<table key="hosts">
+<elem>10.167.0.24</elem>
+<elem>10.167.0.29</elem>
+</table>
+</table>
+<table>
+<table key="key">
+<elem key="type">ssh-ed25519</elem>
+<elem key="fingerprint">7d:35:0e:77:5f:d5:20:e2:ee:e5:5e:56:d9:b8:b3:e9</elem>
+<elem key="bits">256</elem>
+</table>
+<table key="hosts">
+<elem>10.167.0.20</elem>
+<elem>10.167.0.21</elem>
+<elem>10.167.0.22</elem>
+<elem>10.167.0.25</elem>
+</table>
+</table>
+</script><script id="duplicates" output="&#xa;  SSH&#xa;      Key 256 c0:08:b4:df:21:50:b7:84:e5:0a:8d:a8:e9:fd:fd:ac (ECDSA):&#xa;          10.167.0.24&#xa;          10.167.0.29&#xa;      Key 256 24:ad:00:3b:b9:23:14:ed:71:e6:e5:97:51:ef:24:ee (ECDSA):&#xa;          10.167.0.20&#xa;          10.167.0.21&#xa;          10.167.0.22&#xa;          10.167.0.25&#xa;      Key 256 7d:35:0e:77:5f:d5:20:e2:ee:e5:5e:56:d9:b8:b3:e9 (ED25519):&#xa;          10.167.0.20&#xa;          10.167.0.21&#xa;          10.167.0.22&#xa;          10.167.0.25&#xa;      Key 256 4b:5d:e2:d7:67:e9:f6:c1:10:3f:a8:12:42:8d:f6:bf (ED25519):&#xa;          10.167.0.24&#xa;          10.167.0.29&#xa;"/></postscript><runstats><finished time="1708163303" timestr="Sat Feb 17 10:48:23 2024" summary="Nmap done at Sat Feb 17 10:48:23 2024; 256 IP addresses (25 hosts up) scanned in 14.21 seconds" elapsed="14.21" exit="success"/><hosts up="25" down="231" total="256"/>
+</runstats>
+</nmaprun>
