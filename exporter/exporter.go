@@ -17,11 +17,11 @@ var additionalHeightPerPort = 20
 var padding = 30
 
 // Duplicate Fingerprint hosts display
-var dupHostsFingerprintX = -400
+var dupHostsFingerprintX = -450
 var dupHostsFingerprintY = 0
-var dupHostsFingerprintWidth = 260
-var dupHostsFingerprintHeightPerMac = 15
-var dupHostsFingerprintBaseHeight = 70
+var dupHostsFingerprintWidth = 310
+var dupHostsFingerprintHeightPerMac = 20
+var dupHostsFingerprintBaseHeight = 85
 
 // Unidentified hosts
 var unidentifiedHostsX = -700
@@ -104,12 +104,12 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 
 func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
 	// Group hosts by Fingerprint address
-	hostGroups := make(map[string][]core.Host)
+	hostGroups := make(map[core.HostKey][]core.Host)
 	for _, host := range scan.Hosts {
 		for _, port := range host.Ports {
 			for _, hostKey := range port.HostKeys {
-				if hostKey.Type == "ssh-rsa" && hostKey.Fingerprint != "" {
-					hostGroups[hostKey.Fingerprint] = append(hostGroups[hostKey.Fingerprint], host)
+				if hostKey.Fingerprint != "" {
+					hostGroups[hostKey] = append(hostGroups[hostKey], host)
 				}
 			}
 		}
@@ -118,13 +118,13 @@ func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
 	// For each group of hosts with the same Fingerprint create a box
 	currentX := dupHostsFingerprintX
 	currentY := dupHostsFingerprintY
-	for mac, hosts := range hostGroups {
+	for hostKey, hosts := range hostGroups {
 		// Do not show Fingerprints with only one host:
 		if len(hosts) <= 1 {
 			continue
 		}
 
-		value := fmt.Sprintf("Hosts with RSA Fingerprint<br><strong>%v</strong>:<br><br>", mac)
+		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong><br><br><u>IPs:</u><br>", hostKey.Type, hostKey.Fingerprint)
 		for _, host := range hosts {
 			value += fmt.Sprintf("%v<br>", host.IPv4)
 		}
@@ -132,7 +132,7 @@ func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
 			Id:     uuid.NewString(),
 			Value:  value,
 			Parent: "1",
-			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
+			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2;align=left;spacingLeft=10;spacingRight=10;",
 			Vertex: "1",
 			MxGeometry: &MxGeometry{
 				X:      fmt.Sprint(currentX),
@@ -211,13 +211,11 @@ func getHostValue(host core.Host) string {
 			)
 		}
 		for _, hostKey := range port.HostKeys {
-			if hostKey.Type == "ssh-rsa" {
-				value += fmt.Sprintf(
-					"<span style=\"color: %v\">(RSA: %v)</span><br>",
-					serviceColor,
-					port.HostKeys[0].Fingerprint,
-				)
-			}
+			value += fmt.Sprintf(
+				"<span style=\"color: %v\">(Key: %v)</span><br>",
+				serviceColor,
+				hostKey.Fingerprint,
+			)
 		}
 	}
 
