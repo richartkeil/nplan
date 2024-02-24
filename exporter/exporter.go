@@ -11,8 +11,8 @@ import (
 )
 
 // Keys
-var keyHeight float32 = 50
-var keyWidth float32 = 22.5
+var keyHeight = 50
+var keyWidth = 23
 var keyColorMap = make(map[string]string)
 
 // Hosts
@@ -20,9 +20,9 @@ var rows = 8
 var hostWidth = 260
 var hostHeight = 160
 var additionalHeightPerPort = 20
-var hostKeyOffsetX float32 = 235
-var hostKeyOffsetY float32 = 5
-var hostKeyPadding float32 = 10
+var hostKeyOffsetX = 235
+var hostKeyOffsetY = 5
+var hostKeyPadding = 10
 var hostPadding = 30
 
 // Duplicate Fingerprint hosts display
@@ -31,8 +31,8 @@ var dupHostsFingerprintY = 0
 var dupHostsFingerprintWidth = 350
 var dupHostsFingerprintBaseHeight = 70
 var dupHostsInsetX = 50
-var dupHostsKeyOffsetX float32 = 0
-var dupHostsKeyOffsetY float32 = 23.75
+var dupHostsKeyOffsetX = 0
+var dupHostsKeyOffsetY = 24
 
 // Unidentified hosts
 var unidentifiedHostsX = -700
@@ -107,7 +107,7 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 		})
 
 		// Add colored keys
-		keyCount := float32(0)
+		keyCount := 0
 		for _, port := range host.Ports {
 			for _, hostKey := range port.HostKeys {
 				if (keyColorMap[hostKey.Fingerprint] != "") {
@@ -264,7 +264,7 @@ func getHostValue(host core.Host) string {
 	return value
 }
 
-func makeKeyIconCell(parentId string, color string, x float32, y float32) MxCell {
+func makeKeyIconCell(parentId string, color string, x int, y int) MxCell {
 	return MxCell{
 		Id:     uuid.NewString(),
 		Value:  "",
