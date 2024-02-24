@@ -13,7 +13,6 @@ import (
 // Keys
 var keyHeight = 50
 var keyWidth = 23
-var keyColorMap = make(map[string]string)
 
 // Hosts
 var rows = 8
@@ -40,7 +39,6 @@ var unidentifiedHostsY = 0
 var unidentifiedHostsWidth = 260
 var unidentifiedHostsHeight = 100
 
-
 func check(e error) {
 	if e != nil {
 		panic(e)
@@ -56,8 +54,10 @@ func Export(path string, scan *core.Scan) {
 		Id:     "1",
 		Parent: "0",
 	})
-	cells = addDuplicateHostKeys(cells, scan)
-	cells = addHosts(cells, scan)
+
+	keyColorMap := findDuplicateHostKeyColors(scan)
+	cells = addHosts(cells, scan, keyColorMap)
+	cells = addDuplicateHostKeys(cells, scan, keyColorMap)
 	cells = addUnidentifiedHosts(cells, scan)
 
 	mxFile := MxFile{
@@ -86,7 +86,43 @@ func Export(path string, scan *core.Scan) {
 	os.WriteFile(path, output, 0644)
 }
 
-func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
+func findDuplicateHostKeyColors(scan *core.Scan) map[core.HostKey]string {
+	// Group hosts by host key
+	hostGroups := make(map[core.HostKey][]core.Host)
+	for _, host := range scan.Hosts {
+		for _, port := range host.Ports {
+			for _, hostKey := range port.HostKeys {
+				if hostKey.Fingerprint != "" {
+					hostGroups[hostKey] = append(hostGroups[hostKey], host)
+				}
+			}
+		}
+	}
+
+	// Generate a unique color palette for all keys that are shared by more than one host
+	duplicateHostCount := 0
+	for _, hosts := range hostGroups {
+		if len(hosts) > 1 {
+			duplicateHostCount++
+		}
+	}
+
+	palette := colorful.FastHappyPalette(duplicateHostCount)
+	keyColorMap := make(map[core.HostKey]string)
+
+	// Assign a color to each duplicate key
+	keyIndex := 0
+	for key, hosts := range hostGroups {
+		if len(hosts) <= 1 {
+			continue
+		}
+		keyColorMap[key] = palette[keyIndex].Hex()
+		keyIndex += 1
+	}
+	return keyColorMap
+}
+
+func addHosts(cells []MxCell, scan *core.Scan, keyColorMap map[core.HostKey]string) []MxCell {
 	currentX := 0
 	currentY := 0
 	for i, host := range scan.Hosts {
@@ -110,8 +146,9 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 		keyCount := 0
 		for _, port := range host.Ports {
 			for _, hostKey := range port.HostKeys {
-				if (keyColorMap[hostKey.Fingerprint] != "") {
-					cells = append(cells, makeKeyIconCell(id, keyColorMap[hostKey.Fingerprint], hostKeyOffsetX, hostKeyOffsetY + (keyHeight + hostKeyPadding) * keyCount))	
+				if keyColorMap[hostKey] != "" {
+					color := keyColorMap[hostKey]
+					cells = append(cells, makeKeyIconCell(id, color, hostKeyOffsetX, hostKeyOffsetY+(keyHeight+hostKeyPadding)*keyCount))
 					keyCount += 1
 				}
 			}
@@ -127,41 +164,11 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 	return cells
 }
 
-func addDuplicateHostKeys(cells []MxCell, scan *core.Scan) []MxCell {
-	// Group hosts by host key
-hostGroups := make(map[core.HostKey][]core.Host)
-	for _, host := range scan.Hosts {
-		for _, port := range host.Ports {
-			for _, hostKey := range port.HostKeys {
-				if hostKey.Fingerprint != "" {
-					hostGroups[hostKey] = append(hostGroups[hostKey], host)
-				}
-			}
-		}
-	}
-	
-	// Get number of groups with more than one host in order to generate a unique color palette
-	duplicateHostCount := 0
-	for _, hosts := range hostGroups {
-		if len(hosts) > 1 {
-				duplicateHostCount++
-		}
-	}
-	palette := colorful.FastHappyPalette(duplicateHostCount)
-
+func addDuplicateHostKeys(cells []MxCell, scan *core.Scan, keyColorMap map[core.HostKey]string) []MxCell {
 	// For each group of hosts with the same Fingerprint create a box
 	currentX := dupHostsFingerprintX
 	currentY := dupHostsFingerprintY
-	colorIndex := 0
-	for key, hosts := range hostGroups {
-		// Do not show Fingerprints with only one host:
-		if len(hosts) <= 1 {
-			continue
-		}
-
-		color := palette[colorIndex].Hex()
-		keyColorMap[key.Fingerprint] = color
-
+	for key, color := range keyColorMap {
 		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong>", key.Type, key.Fingerprint)
 		id := uuid.NewString()
 		cells = append(cells, MxCell{
@@ -180,7 +187,6 @@ hostGroups := make(map[core.HostKey][]core.Host)
 		})
 		cells = append(cells, makeKeyIconCell(id, color, dupHostsKeyOffsetX, dupHostsKeyOffsetY))
 		currentY += dupHostsFingerprintBaseHeight + hostPadding
-		colorIndex += 1
 	}
 	return cells
 }
