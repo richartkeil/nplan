@@ -6,22 +6,32 @@ import (
 	"os"
 
 	"github.com/google/uuid"
+	"github.com/lucasb-eyer/go-colorful"
 	"github.com/richartkeil/nplan/core"
 )
+
+// Keys
+var keyHeight = 50
+var keyWidth = 23
 
 // Hosts
 var rows = 8
 var hostWidth = 260
 var hostHeight = 160
 var additionalHeightPerPort = 20
-var padding = 30
+var hostKeyOffsetX = 235
+var hostKeyOffsetY = 5
+var hostKeyPadding = 10
+var hostPadding = 30
 
 // Duplicate Fingerprint hosts display
-var dupHostsFingerprintX = -400
+var dupHostsFingerprintX = -440
 var dupHostsFingerprintY = 0
-var dupHostsFingerprintWidth = 260
-var dupHostsFingerprintHeightPerMac = 15
+var dupHostsFingerprintWidth = 350
 var dupHostsFingerprintBaseHeight = 70
+var dupHostsInsetX = 50
+var dupHostsKeyOffsetX = 0
+var dupHostsKeyOffsetY = 24
 
 // Unidentified hosts
 var unidentifiedHostsX = -700
@@ -44,8 +54,10 @@ func Export(path string, scan *core.Scan) {
 		Id:     "1",
 		Parent: "0",
 	})
-	cells = addHosts(cells, scan)
-	cells = addHostsWithSameFingerprint(cells, scan)
+
+	keyColorMap := findDuplicateHostKeyColors(scan)
+	cells = addHosts(cells, scan, keyColorMap)
+	cells = addDuplicateHostKeys(cells, scan, keyColorMap)
 	cells = addUnidentifiedHosts(cells, scan)
 
 	mxFile := MxFile{
@@ -74,12 +86,49 @@ func Export(path string, scan *core.Scan) {
 	os.WriteFile(path, output, 0644)
 }
 
-func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
+func findDuplicateHostKeyColors(scan *core.Scan) map[core.HostKey]string {
+	// Group hosts by host key
+	hostGroups := make(map[core.HostKey][]core.Host)
+	for _, host := range scan.Hosts {
+		for _, port := range host.Ports {
+			for _, hostKey := range port.HostKeys {
+				if hostKey.Fingerprint != "" {
+					hostGroups[hostKey] = append(hostGroups[hostKey], host)
+				}
+			}
+		}
+	}
+
+	// Generate a unique color palette for all keys that are shared by more than one host
+	duplicateHostCount := 0
+	for _, hosts := range hostGroups {
+		if len(hosts) > 1 {
+			duplicateHostCount++
+		}
+	}
+
+	palette := colorful.FastHappyPalette(duplicateHostCount)
+	keyColorMap := make(map[core.HostKey]string)
+
+	// Assign a color to each duplicate key
+	keyIndex := 0
+	for key, hosts := range hostGroups {
+		if len(hosts) <= 1 {
+			continue
+		}
+		keyColorMap[key] = palette[keyIndex].Hex()
+		keyIndex += 1
+	}
+	return keyColorMap
+}
+
+func addHosts(cells []MxCell, scan *core.Scan, keyColorMap map[core.HostKey]string) []MxCell {
 	currentX := 0
 	currentY := 0
 	for i, host := range scan.Hosts {
+		id := uuid.NewString()
 		cells = append(cells, MxCell{
-			Id:     uuid.NewString(),
+			Id:     id,
 			Value:  getHostValue(host),
 			Parent: "1",
 			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
@@ -92,9 +141,22 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 				As:     "geometry",
 			},
 		})
-		currentY += getHostHeight(&host) + padding
+
+		// Add colored keys
+		keyCount := 0
+		for _, port := range host.Ports {
+			for _, hostKey := range port.HostKeys {
+				if keyColorMap[hostKey] != "" {
+					color := keyColorMap[hostKey]
+					cells = append(cells, makeKeyIconCell(id, color, hostKeyOffsetX, hostKeyOffsetY+(keyHeight+hostKeyPadding)*keyCount))
+					keyCount += 1
+				}
+			}
+		}
+
+		currentY += getHostHeight(&host) + hostPadding
 		if (i+1)%rows == 0 {
-			currentX += hostWidth + padding
+			currentX += hostWidth + hostPadding
 			currentY = 0
 		}
 	}
@@ -102,47 +164,29 @@ func addHosts(cells []MxCell, scan *core.Scan) []MxCell {
 	return cells
 }
 
-func addHostsWithSameFingerprint(cells []MxCell, scan *core.Scan) []MxCell {
-	// Group hosts by Fingerprint address
-	hostGroups := make(map[string][]core.Host)
-	for _, host := range scan.Hosts {
-		for _, port := range host.Ports {
-			for _, hostKey := range port.HostKeys {
-				if hostKey.Type == "ssh-rsa" && hostKey.Fingerprint != "" {
-					hostGroups[hostKey.Fingerprint] = append(hostGroups[hostKey.Fingerprint], host)
-				}
-			}
-		}
-	}
-
+func addDuplicateHostKeys(cells []MxCell, scan *core.Scan, keyColorMap map[core.HostKey]string) []MxCell {
 	// For each group of hosts with the same Fingerprint create a box
 	currentX := dupHostsFingerprintX
 	currentY := dupHostsFingerprintY
-	for mac, hosts := range hostGroups {
-		// Do not show Fingerprints with only one host:
-		if len(hosts) <= 1 {
-			continue
-		}
-
-		value := fmt.Sprintf("Hosts with RSA Fingerprint<br><strong>%v</strong>:<br><br>", mac)
-		for _, host := range hosts {
-			value += fmt.Sprintf("%v<br>", host.IPv4)
-		}
+	for key, color := range keyColorMap {
+		value := fmt.Sprintf("<u>Identical SSH Key:</u><br>Type: <strong>%v</strong><br>Fingerprint: <strong>%v</strong>", key.Type, key.Fingerprint)
+		id := uuid.NewString()
 		cells = append(cells, MxCell{
-			Id:     uuid.NewString(),
+			Id:     id,
 			Value:  value,
 			Parent: "1",
-			Style:  "rounded=1;whiteSpace=wrap;html=1;arcSize=2",
+			Style:  fmt.Sprintf("rounded=1;whiteSpace=wrap;html=1;arcSize=2;align=left;spacingLeft=%v", dupHostsInsetX),
 			Vertex: "1",
 			MxGeometry: &MxGeometry{
 				X:      fmt.Sprint(currentX),
 				Y:      fmt.Sprint(currentY),
 				Width:  fmt.Sprint(dupHostsFingerprintWidth),
-				Height: fmt.Sprint(dupHostsFingerprintBaseHeight + len(hosts)*dupHostsFingerprintHeightPerMac),
+				Height: fmt.Sprint(dupHostsFingerprintBaseHeight),
 				As:     "geometry",
 			},
 		})
-		currentY += dupHostsFingerprintBaseHeight + len(hosts)*dupHostsFingerprintHeightPerMac + padding
+		cells = append(cells, makeKeyIconCell(id, color, dupHostsKeyOffsetX, dupHostsKeyOffsetY))
+		currentY += dupHostsFingerprintBaseHeight + hostPadding
 	}
 	return cells
 }
@@ -165,7 +209,7 @@ func addUnidentifiedHosts(cells []MxCell, scan *core.Scan) []MxCell {
 				As:     "geometry",
 			},
 		})
-		currentY += unidentifiedHostsHeight + padding
+		currentY += unidentifiedHostsHeight + hostPadding
 	}
 	return cells
 }
@@ -210,15 +254,6 @@ func getHostValue(host core.Host) string {
 				port.ServiceVersion,
 			)
 		}
-		for _, hostKey := range port.HostKeys {
-			if hostKey.Type == "ssh-rsa" {
-				value += fmt.Sprintf(
-					"<span style=\"color: %v\">(RSA: %v)</span><br>",
-					serviceColor,
-					port.HostKeys[0].Fingerprint,
-				)
-			}
-		}
 	}
 
 	// Misc
@@ -233,4 +268,21 @@ func getHostValue(host core.Host) string {
 	}
 
 	return value
+}
+
+func makeKeyIconCell(parentId string, color string, x int, y int) MxCell {
+	return MxCell{
+		Id:     uuid.NewString(),
+		Value:  "",
+		Parent: parentId,
+		Style:  fmt.Sprintf("shape=mxgraph.cisco19.key;fillColor=%v;strokeColor=none;rotation=90", color),
+		Vertex: "1",
+		MxGeometry: &MxGeometry{
+			X:      fmt.Sprint(x),
+			Y:      fmt.Sprint(y),
+			Width:  fmt.Sprint(keyHeight),
+			Height: fmt.Sprint(keyWidth),
+			As:     "geometry",
+		},
+	}
 }
