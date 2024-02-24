@@ -87,13 +87,13 @@ func Export(path string, scan *core.Scan) {
 }
 
 func findDuplicateHostKeyColors(scan *core.Scan) map[core.HostKey]string {
-	// Group hosts by host key
-	hostGroups := make(map[core.HostKey][]core.Host)
+	// Collect number of hosts that share each key:
+	hostsPerKey := make(map[core.HostKey]int)
 	for _, host := range scan.Hosts {
 		for _, port := range host.Ports {
 			for _, hostKey := range port.HostKeys {
 				if hostKey.Fingerprint != "" {
-					hostGroups[hostKey] = append(hostGroups[hostKey], host)
+					hostsPerKey[hostKey] += 1
 				}
 			}
 		}
@@ -101,8 +101,8 @@ func findDuplicateHostKeyColors(scan *core.Scan) map[core.HostKey]string {
 
 	// Generate a unique color palette for all keys that are shared by more than one host
 	duplicateHostCount := 0
-	for _, hosts := range hostGroups {
-		if len(hosts) > 1 {
+	for _, hosts := range hostsPerKey {
+		if hosts > 1 {
 			duplicateHostCount++
 		}
 	}
@@ -112,8 +112,8 @@ func findDuplicateHostKeyColors(scan *core.Scan) map[core.HostKey]string {
 
 	// Assign a color to each duplicate key
 	keyIndex := 0
-	for key, hosts := range hostGroups {
-		if len(hosts) <= 1 {
+	for key, hosts := range hostsPerKey {
+		if hosts <= 1 {
 			continue
 		}
 		keyColorMap[key] = palette[keyIndex].Hex()
