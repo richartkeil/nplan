@@ -12,8 +12,8 @@ go install github.com/richartkeil/nplan@latest
 
 By default the binary will be installed to `$GOPATH/bin` (which you could add to your $PATH).
 
-```
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+```sh
+export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
 ## Usage
